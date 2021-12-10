@@ -1,15 +1,15 @@
 <?php
 
 define('ROOT', rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/'));
+define("CONFIG",parse_ini_file('.env'));
+
 
 $url_parts = explode('/', $_SERVER['REQUEST_URI']);
 
 $controllers = [
     'login',
-    'signup',
     'user',
     'safe',
-    'create',
     'verification'
 ];
 

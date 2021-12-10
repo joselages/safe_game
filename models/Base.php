@@ -7,6 +7,6 @@ class Base
 
     public function __construct()
     {
-        $this->db = new PDO('mysql:host=localhost;dbname=safe_game;charset=utf8mb4;', 'root', '');
+        $this->db = new PDO('mysql:host='.CONFIG["DB_HOST"].';dbname='.CONFIG["DB_NAME"].';charset='.CONFIG["DB_CHARSET"].';', CONFIG["DB_USERNAME"], CONFIG["DB_PASSWORD"]);
     }
 }
