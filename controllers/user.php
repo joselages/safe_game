@@ -1,31 +1,46 @@
 <?php
 
+$actions = [
+    'show',
+    'edit',
+    'create'
+];
+
 require('models/User.php');
 $model = new User();
 
 if(is_numeric($action)){ //get by id
-    $id = $action;  
-    
-    $user = $model->get($id);
 
+    $id = $action;
+    $action = 'show';  
 } else if( //editar user
-    $action === 'edit' &&
-    is_numeric($id)
+    $action === 'edit'
 ){
 
-    $user = $model->get($id);
+    if(!is_numeric($id)){
+        http_response_code(400);
+        die('Bad request');
+    }
 
+} else if($action === 'create'){ //sign up
 
-    require('views/user/edit.php');
-    exit;
+}else{ //ver o perfil do user q está logged
 
-} else { //ver o perfil do user q está logged
-
-    // $id = $_SESSION['user_id'];
-    $id = 1;  
-    $user = $model->get($id);
+    $id = 1;
+    $action = 'show';  
 
 }
 
 
-require('views/user/show.php');
+
+if(!in_array($action, $actions)){
+    http_response_code(400);
+    die('Bad request');
+}
+
+
+
+$user = $model->get($id);
+
+
+require('views/user/'.$action.'.php');
