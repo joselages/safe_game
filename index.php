@@ -15,6 +15,12 @@ $controllers = [
 
 $controller = $url_parts[1];
 
+if(empty($controller)){
+    require('views/homepage.php');
+    die;
+}
+
+$id = !empty($url_parts[2]) ? $url_parts[2] : '';
 
 if(!in_array($controller, $controllers)){
     http_response_code(404);
