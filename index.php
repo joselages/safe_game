@@ -13,19 +13,21 @@ $controllers = [
     'verification'
 ];
 
-$controller = $url_parts[1];
+$controller = !empty($url_parts[1]) ? $url_parts[1] : '';
+$action = !empty($url_parts[2]) ? $url_parts[2] : '';
+$id = !empty($url_parts[3]) ? $url_parts[3] : '';
 
-if(empty($controller)){
+
+if (empty($controller)) {
     require('views/homepage.php');
     die;
 }
 
-$id = !empty($url_parts[2]) ? $url_parts[2] : '';
 
-if(!in_array($controller, $controllers)){
+if (!in_array($controller, $controllers)) {
     http_response_code(404);
     die('Not found');
 }
 
 
-require('controllers/'.$controller.'.php');
+require('controllers/' . $controller . '.php');

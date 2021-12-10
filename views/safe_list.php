@@ -13,7 +13,7 @@
 
             <section class="user-profile js-profileContent" data-link="profile">
                 <button class="profile-edit">✏️ Edit profile</button>
-                <h2 class="profile-name">Name</h2>
+                <h2 class="profile-name"><?php echo $user['username']; ?></h2>
                 <dl class="profile-info">
                     <div>
                         <dt>Safes created</dt>
@@ -33,7 +33,7 @@
                     </div>
                     <div>
                         <dt>User since</dt>
-                        <dd>11-06-1992</dd>
+                        <dd><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></dd>
                     </div>
                 </dl>
             </section>
