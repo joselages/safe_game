@@ -17,7 +17,7 @@
                 <input type="password" name="password" minlength="8" maxlength="1000" required>
             </label>
 
-            <butto type="submit" name="submit">Login</button>
+            <button type="submit" name="submit">Login</button>
         </form>
         </div>
 

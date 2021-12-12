@@ -752,7 +752,9 @@ button.safe_open-btn:active {
   position: relative;
 }
 
-button.profile-edit {
+a.profile-edit {
+  color: inherit;
+  text-decoration: none;
   position: absolute;
   right: 0.5rem;
   background-color: rgba(255, 255, 255, 0.3);
@@ -803,6 +805,7 @@ button.profile-edit {
 .verification_email{
   text-align: center;
   font-family: 'VT323', monospace;
+  font-size: 1.55rem;
   font-size: 2rem;
   display: flex;
   flex-direction: column;
@@ -810,12 +813,35 @@ button.profile-edit {
  justify-content: center;
   gap:2rem;
   padding:2rem;
+  
 }
 
 .verification_email span{
   font-size: 4rem;
 }
 
+
+.form-alert{
+  font-family: 'VT323', monospace;
+  font-size: 1.55rem;
+  text-align: center;
+  margin: 1rem auto 0 auto;
+  padding: .75rem;
+  border-radius: 5px;
+  width: 80%;
+}
+
+.form-alert.-negative{
+  background-color: rgb(236, 95, 95);
+  color: rgb(88, 0, 0);
+  border: 2px solid rgb(88, 0, 0);
+}
+
+.form-alert.-positive{
+  background-color: rgb(123, 236, 95);
+  color: rgb(3, 88, 0);
+  border: 2px solid rgb(3, 88, 0);
+}
 
 @media screen and (max-width: 900px) {
   :root {

@@ -15,12 +15,12 @@
                 <input type="text" name="name" minlength="2" maxlength="15" value="<?php echo $user['username'] ?>" required>
             </label>
             <label>
-                Email
-                <input type="email" name="email" value="<?php echo $user['email'] ?>" required>
+                Password
+                <input type="text" name="password" minlength="8" maxlength="1000" required>
             </label>
             <label>
-                Password
-                <input type="text" name="password" minlength="8" maxlength="1000" value="<?php echo $user['password'] ?>" required>
+                Confirm Password
+                <input type="text" name="password_confirm" minlength="8" maxlength="1000" required>
             </label>
 
             <button type="submit" name="submit">Edit</button>

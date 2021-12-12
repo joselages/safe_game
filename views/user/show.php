@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt">
 
-<?php require('templates/head.php');?>
+<?php require('templates/head.php'); ?>
 
 <body>
     <main class="safe safe-form">
@@ -12,7 +12,15 @@
         <div class="profile-container">
 
             <section class="user-profile js-profileContent" data-link="profile">
-                <button class="profile-edit">✏️ Edit profile</button>
+                <?php
+                if (
+                    isset($_SESSION['user_id']) &&
+                    $user['user_id'] == $_SESSION['user_id']
+                ) {
+                ?>
+                    <a href="/user/edit" class="profile-edit">✏️ Edit profile</a>
+
+                <?php } ?>
                 <h2 class="profile-name"><?php echo $user['username']; ?></h2>
                 <dl class="profile-info">
                     <div>

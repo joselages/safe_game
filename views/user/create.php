@@ -8,11 +8,19 @@
         <h1>Safe Sign Up</h1>
         <div class="-door">
 
+        <?php
+        
+        if(isset($result['message'])){
+            $feedback = $result['isStored'] ? '-positive' : '-negative';
 
-        <form class="make-form -big-inputs" action="" method="post">
+            echo '<p role="alert" class="form-alert '.$feedback.'">'.$result['message'].'</p>';
+        }
+        ?>
+
+        <form class="make-form -big-inputs" action="/user/create" method="post">
             <label>
                 Name
-                <input type="text" name="name" minlength="2" maxlength="15" required>
+                <input type="text" name="username" minlength="2" maxlength="15" required>
             </label>
             <label>
                 Email

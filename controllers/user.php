@@ -9,38 +9,64 @@ $actions = [
 require('models/User.php');
 $model = new User();
 
-if(is_numeric($action)){ //get by id
 
+$is_logged = isset($_SESSION['user_id']);
+
+if (
+    is_numeric($action)
+) { //get by id
     $id = $action;
-    $action = 'show';  
-} else if( //editar user
+    $action = 'show';
+} else if ( //editar user
     $action === 'edit'
-){
+) {
 
-    if(!is_numeric($id)){
-        http_response_code(400);
-        die('Bad request');
+    if (!$is_logged) {
+        header('Location: ' . ROOT . '/login');
+        die;
     }
 
-} else if($action === 'create'){ //sign up
+    $id = $_SESSION['user_id'];
+} else if ($action === 'create') { //sign up
 
-}else{ //ver o perfil do user q está logged
+    if (isset($_POST['submit'])) {
+        $result = $model->store($_POST);
 
-    $id = 1;
-    $action = 'show';  
+        if ($result['isStored']) {
+            http_response_code(202);
+        }
+    } else if (
+        $is_logged &&
+        !isset($_POST['submit'])
+    ) {
+        header('Location: ' . ROOT . '/user');
+        die;
+    }
+} else { //ir para a raiz -> /
 
+    if (
+        !$is_logged
+    ) {
+        header('Location: ' . ROOT . '/login');
+        die;
+    } else {
+        $id = $_SESSION['user_id'];
+        $action = 'show';
+    }
 }
 
 
 
-if(!in_array($action, $actions)){
-    http_response_code(400);
-    die('Bad request');
+if ($action !== 'create') {
+
+    $user = $model->get($id);
 }
 
+if (
+    !in_array($action, $actions)
+) {
+    http_response_code(404);
+    die('Not found...');
+}
 
-
-$user = $model->get($id);
-
-
-require('views/user/'.$action.'.php');
+require('views/user/' . $action . '.php');

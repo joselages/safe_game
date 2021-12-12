@@ -6,7 +6,7 @@
 <body>
     <main class="safe home-page">
         <h1>Welcome to the Safe Game!</h1>
-        <p><a href="/signup">Sign in</a>, <a href="login">log in</a>, <a href="create">create a safe</a>,  or just try to crack one of our users' safe:</p>
+        <p><a href="/user/create">Sign in</a>, <a href="login">log in</a>, <a href="create">create a safe</a>,  or just try to crack one of our users' safe:</p>
 
         <ul class="safe-list">
             <li class="list-item">
