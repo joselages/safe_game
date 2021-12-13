@@ -17,7 +17,7 @@ if (
 ) { //get by id
     $id = $action;
     $action = 'show';
-} else if ( //editar user
+} else if (
     $action === 'edit'
 ) {
 
@@ -25,6 +25,19 @@ if (
         header('Location: ' . ROOT . '/login');
         die;
     }
+    
+    if (
+        isset($_POST['submit'])
+    ) {
+
+        $_POST["user_id"] = $_SESSION['user_id'];
+
+        $result = $model->edit($_POST);
+
+        $_SESSION['username'] = $_POST["username"];
+    }
+
+
 
     $id = $_SESSION['user_id'];
 } else if ($action === 'create') { //sign up

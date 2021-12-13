@@ -60,4 +60,18 @@ class Validate extends Base{
 
         return false;
     }
+
+    public function edit($data){
+        if(
+            mb_strlen($data['username']) >= 2 &&
+            mb_strlen($data['username']) <= 15 &&
+            mb_strlen($data['password']) >= 8 &&
+            mb_strlen($data['password']) <= 1000 &&
+            $data['password'] === $data['repeat_password']
+        ){
+            return true;
+        }
+
+        return false;
+    }
 }

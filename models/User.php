@@ -82,17 +82,75 @@ class User extends Base
         ];
     }
 
+    public function edit($data)
+    {
+        $data = $this->sanitize($data);
+
+        $validate = new Validate();
+        if ($validate->edit($data) === false) {
+            http_response_code(400);
+            return [
+                "isEdited" => false,
+                "message" => "Inputs not ok"
+            ];
+        }
+
+        $query = $this->db->prepare('
+            SELECT username
+            FROM users
+            WHERE username = ? 
+        ');
+
+        $query->execute([
+            $data['username']
+        ]);
+
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+
+        if(!empty($user)){
+            return [
+                "isEdited" => false,
+                "message" => "Username already taken"
+            ];
+        }
+
+        $query = $this->db->prepare('
+            UPDATE users
+            SET username = ?, password = ?
+            WHERE user_id = ?;
+        ');
+
+       $result = $query->execute([
+            $data['username'],
+            password_hash($data['password'], PASSWORD_DEFAULT),
+            $data['user_id']
+        ]);
+
+        if($result === false){
+            http_response_code(500);
+            return [
+                "isEdited" => false,
+                "message" => 'Something went wrong, please try again later.'
+            ];
+        }
+
+        return [
+            "isEdited" => true,
+            "message" => 'Info updated with success!'
+        ];
+    }
+
     public function verifyUser($verification_code)
     {
 
-        
+
         $sanitizedCode = $this->sanitize(["verification_code" => $verification_code]);
         $verification_code = $sanitizedCode["verification_code"];
 
-        
+
         $validate = new Validate();
 
-        if($validate->verificationCode($verification_code) === false){
+        if ($validate->verificationCode($verification_code) === false) {
             http_response_code(400);
 
             return [
@@ -100,7 +158,7 @@ class User extends Base
                 "message" => "Wrong code format"
             ];
         }
-        
+
         $query = $this->db->prepare("
             SELECT email, verification_code
             FROM users
@@ -134,13 +192,13 @@ class User extends Base
             http_response_code(500);
             return [
                 "isVerified" => false,
-                "message" => $result
+                "message" => 'Something went wrong, please try again later.'
             ];
         }
 
         return [
             "isVerified" => true,
-            "message" => "The account with the email ".$user['email']." has been verified!"
+            "message" => "The account with the email " . $user['email'] . " has been verified!"
         ];
     }
 }
