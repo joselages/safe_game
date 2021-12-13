@@ -6,9 +6,16 @@
 <body>
     <main class="safe">
         <section class="verification_email safe_door">
-            <span>YEAH! 🤘</span>
-            <h1>The account with the email X has been verified!</h1>
-            <p>This means you can <a href="/login">login</a> now...</p>
+            <?php
+            $feedbackIcon = $result['isVerified'] ? 'YEAH! 🤘' : 'Oops... 👎';
+
+            ?>
+            <span><?php echo $feedbackIcon ?></span>
+            <h1><?php echo $result['message'] ?></h1>
+
+            <?php if( $result['isVerified']){ ?>
+                <p>This means you can <a href="/login">login</a> now...</p>
+            <?php } ?>
         </section>
     </main>
 

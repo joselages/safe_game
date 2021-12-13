@@ -38,4 +38,14 @@ class Validate extends Base{
         return false;
 
     }
+
+    public function verificationCode($code){
+        if(
+            mb_strlen($code) === 64
+        ){
+            return true;
+        }
+
+        return false;
+    }
 }

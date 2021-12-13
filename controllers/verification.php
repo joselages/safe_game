@@ -7,4 +7,9 @@ if(empty($id)){
     die('Bad request');
 }
 
+require('models/User.php');
+$model = new User();
+
+$result = $model->verifyUser($id);
+
 require('views/verification_email.php');

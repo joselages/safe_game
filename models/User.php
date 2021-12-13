@@ -32,6 +32,9 @@ class User extends Base
     {
 
         $validate = new Validate();
+
+        $data = $this->sanitize($data);
+
         if (
             $validate->signup($data) === false
         ) {
@@ -76,6 +79,68 @@ class User extends Base
         return [
             'isStored' => true,
             'message' => 'Please check your email to verify your account'
+        ];
+    }
+
+    public function verifyUser($verification_code)
+    {
+
+        
+        $sanitizedCode = $this->sanitize(["verification_code" => $verification_code]);
+        $verification_code = $sanitizedCode["verification_code"];
+
+        
+        $validate = new Validate();
+
+        if($validate->verificationCode($verification_code) === false){
+            http_response_code(400);
+
+            return [
+                "isVerified" => false,
+                "message" => "Wrong code format"
+            ];
+        }
+        
+        $query = $this->db->prepare("
+            SELECT email, verification_code
+            FROM users
+            WHERE verification_code = ? AND is_verified = 0;
+        ");
+
+        $query->execute([$verification_code]);
+
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($user)) {
+            http_response_code(400);
+
+            return [
+                "isVerified" => false,
+                "message" => "The code is wrong or the account was already verified"
+            ];
+        }
+
+        $query = $this->db->prepare("
+            UPDATE users
+            SET is_verified = 1
+            WHERE verification_code = ?;
+       ");
+
+        $result = $query->execute([$user["verification_code"]]);
+
+        echo $result;
+
+        if ($result === false) {
+            http_response_code(500);
+            return [
+                "isVerified" => false,
+                "message" => $result
+            ];
+        }
+
+        return [
+            "isVerified" => true,
+            "message" => "The account with the email ".$user['email']." has been verified!"
         ];
     }
 }
