@@ -48,4 +48,16 @@ class Validate extends Base{
 
         return false;
     }
+
+    public function login($data){
+        if(
+            filter_var($data['email'], FILTER_VALIDATE_EMAIL) &&
+            mb_strlen($data['password']) >= 8 &&
+            mb_strlen($data['password']) <= 1000
+        ){
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -4,7 +4,6 @@ define("CONFIG",parse_ini_file('.env'));
 // session_start();
 // $_SESSION['user_id'] = 1;
 session_start();
-session_destroy();
 
 
 $url_parts = explode('/', $_SERVER['REQUEST_URI']);
