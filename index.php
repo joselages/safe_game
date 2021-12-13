@@ -21,6 +21,11 @@ $id = !empty($url_parts[3]) ? $url_parts[3] : '';
 
 
 if (empty($controller)) {
+    require('models/Safe.php');
+    $model=new Safe();
+
+    $safes = $model->getAllPublic();
+
     require('views/homepage.php');
     die;
 }

@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="safe_wheel-container">
-                    <img class="safe_wheel" id="circle" src="images/11safedial.png">
+                    <img class="safe_wheel" id="circle" src="<?php ROOT ?>/images/11safedial.png">
                     <button class="safe_open-btn -dimmed" id="openBtn">OPEN</button>
                 </div>
 
