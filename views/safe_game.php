@@ -32,8 +32,7 @@
         <span class="safe_creator">Safe created by: <a href="/user">Name</a></span>
     </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/Draggable.min.js"></script>
+
 
     <script>
         const inputs = document.getElementsByClassName('js-input');

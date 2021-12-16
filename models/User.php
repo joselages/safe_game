@@ -186,8 +186,6 @@ class User extends Base
 
         $result = $query->execute([$user["verification_code"]]);
 
-        echo $result;
-
         if ($result === false) {
             http_response_code(500);
             return [

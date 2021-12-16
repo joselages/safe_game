@@ -1,5 +1,10 @@
 <?php
 
+if($is_logged){
+    header('Location:' . ROOT . '/user');
+    die;
+}
+
 if (isset($_POST['submit'])) {
 
     require('models/Access.php');

@@ -9,9 +9,6 @@ $actions = [
 require('models/User.php');
 $model = new User();
 
-
-$is_logged = isset($_SESSION['user_id']);
-
 if (
     is_numeric($action)
 ) { //get by id
