@@ -26,32 +26,51 @@ if(
         $_SESSION['safe'] = [];
     }
 } else if(
+    $action === 'show' &&
+    isset($_POST['request'])
+){
+    header('Content-Type:application/json');
+    $data = $_POST;
+
+    // echo json_encode($data);
+    // die;
+
+    $result = $model->openSafe($_POST);
+
+    if($result['status'] ){
+        //enviar para a DB q o cofre foi aberto
+    }
+
+    echo json_encode($result);
+    die;
+
+} else if(
     $action === "create" &&
     isset($_POST['request'])
 ){
-        header('Content-Type:application/json');
+    header('Content-Type:application/json');
 
-        $data = $_POST;
+    $data = $_POST;
 
-        if($is_logged){
-            $data['user_id'] = $_SESSION['user_id'];
-        }
+    if($is_logged){
+        $data['user_id'] = $_SESSION['user_id'];
+    }
 
-        if(
-            isset($_FILES['picture']) && 
-            $is_logged
-        ){
-            $picture = $_FILES['picture'];
-        }
+    if(
+        isset($_FILES['picture']) && 
+        $is_logged
+    ){
+        $picture = $_FILES['picture'];
+    }
 
-        if(isset($picture)){
-            $result = $model->store($data, $picture);
-        } else {
-            $result = $model->store($data);
-        }
+    if(isset($picture)){
+        $result = $model->store($data, $picture);
+    } else {
+        $result = $model->store($data);
+    }
 
-        echo json_encode($result);
-        die;
+    echo json_encode($result);
+    die;
 }
 
 

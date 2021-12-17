@@ -4,7 +4,7 @@
 <?php require('templates/head.php');?>
 
 <body>
-    <main class="safe">
+    <main class="safe" >
         <?php if(empty($_SESSION["safe"])){ ?>
         
             <p role="alert" class="form-alert -negative"><?php echo $result['message'] ?></p>
@@ -20,7 +20,7 @@
 
                     <div class="safe_wheel-container">
                         <img class="safe_wheel" id="circle" src="<?php ROOT ?>/images/11safedial.png">
-                        <button class="safe_open-btn -dimmed" id="openBtn">OPEN</button>
+                        <button class="safe_open-btn -dimmed" id="openBtn" data-id="<?php echo $id ?>">OPEN</button>
                     </div>
                 </div>
 
@@ -28,7 +28,7 @@
             </section>
 
             <section class="safe_inside">
-                <div class="inside-txt">
+                <div class="inside-txt js-safeInside">
                     Nothing here for you, you cheater...
                 </div>
             </section>
@@ -52,7 +52,7 @@
             const inputs = document.getElementsByClassName('js-input');
             const btn = document.getElementById('openBtn');
             const safeDoor = document.querySelector('.js-safeDoor');
-
+            const safeInside = document.querySelector('.js-safeInside');
             const config = {
                 padlockValue: 0,
                 spinCount: 0,
@@ -156,12 +156,49 @@
             });
 
 
-            btn.addEventListener('click', () => {
-                if (config.checkCode()) {
-                    safeDoor.classList.add('-open');
-                } else {
-                    console.log('errado')
+
+
+            btn.addEventListener('click', async (event) => {
+
+                if(
+                    config.userInput.length !== 3
+                ){
+                    return;
                 }
+
+                const toSend = new FormData();
+
+                toSend.set('request', 'checkCode');
+                toSend.set('safe_id', event.target.dataset.id);
+
+                config.userInput.forEach((code, idx)=>{
+                    toSend.set('code_'+(idx+1), code);
+                });
+
+                const request = await fetch("/safe/show", {
+                    method: "POST",
+                    body: toSend
+                });
+
+                const response = await request.json();
+
+                console.log(response)
+
+                if(
+                    request.status !== 200 ||
+                    response["status"] === false
+                ){
+                    //tocar musica de erro
+                    return;
+                }
+
+                messageToInject =`
+                    ${ response["content"]['image_path'] ? '<img src="<?php echo ROOT ?>/uploads/20211215224508_312bd514.jpg">' : '' } 
+                    ${ response["content"]['message'] }
+                `;
+
+                safeInside.innerHTML = messageToInject;
+                safeDoor.classList.add('-open');
             });
         </script>
     <?php } ?>

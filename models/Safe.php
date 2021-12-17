@@ -49,7 +49,6 @@ class Safe extends Base
                     ELSE 
                          safes.creator_name  
                 END AS safe_creator,
-                safes.message,
                 safes.created_at,
                 CONCAT(codes.code_1,"/",codes.code_2,"/",codes.code_3) AS code,
                 IF(safes.user_id IS NOT NULL, safes.user_id, 0) AS user_id
@@ -81,6 +80,49 @@ class Safe extends Base
          ];
     }
 
+    public function openSafe($data){
+
+        $data['safe_id'] = intval($data['safe_id']);
+        $data['code_1'] = intval($data['code_1']);
+        $data['code_2'] = intval($data['code_2']);
+        $data['code_3'] = intval($data['code_3']);
+
+        $query= $this->db->prepare('
+            SELECT 
+                safes.message,
+                safes.image_path
+            FROM codes
+            INNER JOIN safes USING (safe_id)
+            WHERE 
+                codes.safe_id = ? AND
+                codes.code_1 = ? AND
+                codes.code_2 = ? AND
+                codes.code_3 = ?;
+       ');
+
+        $query->execute([
+            $data['safe_id'],
+            $data['code_1'],
+            $data['code_2'],
+            $data['code_3']
+        ]);
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if(empty($result)){
+            return[
+                'status'=>false,
+                'message' => 'Wrong code'
+            ];
+        }
+
+        return[
+            'status'=>true,
+            'message' => 'Safe open!',
+            'content' => $result
+        ];
+    }
+
 
     public function store($data, $picture = [])
     {
@@ -93,6 +135,12 @@ class Safe extends Base
             $validate->image($picture)
         ) {
             $image = $this->saveImage($picture); //cheio
+        } else {
+            http_response_code(400);
+            return [
+                "safeCreated" => false,
+                "message" => "Image not allowed"
+            ];
         }
 
         
