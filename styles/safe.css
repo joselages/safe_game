@@ -615,6 +615,10 @@ button.safe_open-btn:active {
   color: black;
   font-size: 1.55rem;
   border-radius: 5px;
+  min-width: 20px;
+  display: inline-block;
+  margin: 0 3px;
+  text-align: center;
 }
 
 .item-code::before {

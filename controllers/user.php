@@ -14,6 +14,11 @@ if (
 ) { //get by id
     $id = $action;
     $action = 'show';
+
+    require('models/Safe.php');
+    $safeModel = new Safe();
+
+    $safes = $safeModel->getAllByUserId($id);
 } else if (
     $action === 'edit'
 ) {

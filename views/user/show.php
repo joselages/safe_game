@@ -47,26 +47,35 @@
                 </dl>
             </section>
             <ul class="safe-list js-profileContent -hidden" data-link="list">
-                <li class="list-item">
-                    <span class="item-state" title="This safe is still uncracked">🔒</span>
-                    <div class="item-info">
-                        <div class="safe-link">
-                            <span class="link">Link</span>
-                            <button class="copy-link js-copyLink" title="Copy to clipboard">📋</button>
-                        </div>
-                        <div class="item-code">
-                            <span>01</span>
-                            <span>02</span>
-                            <span>03</span>
-                        </div>
-                        <p class="item-message">✉️ Message....</p>
-                    </div>
-                    <div class="item-btns">
-                        <button data-id="1" title="Edit">✏️</button>
-                        <button data-id="1" class="js-deleteSafe" title="Delete">🗑️</button>
-                    </div>
-                </li>
+                <?php if(
+                    !empty($safes)
+                ){
+                    foreach($safes as $safe){
+                    ?>
+                        <li class="list-item">
+                            <span class="item-state" title="This safe is still uncracked">🔒</span>
+                            <div class="item-info">
+                                <div class="safe-link">
+                                    <span class="link"><?php echo ROOT .'safe/'.$safe['safe_id'] ?></span>
+                                    <button class="copy-link js-copyLink" title="Copy to clipboard">📋</button>
+                                </div>
+                                <div class="item-code">
+                                    <?php foreach(explode('/', $safe['code']) as $code){
+                                        echo '<span>'.$code.'</span>';
+                                    } ?>
 
+                                </div>
+                                <p class="item-message">✉️ <?php echo substr($safe['message'], 0, 15) ?>...</p>
+                            </div>
+                            <div class="item-btns">
+                                <button data-id="<?php echo $safe['safe_id'] ?>" title="Edit">✏️</button>
+                                <button data-id="<?php echo $safe['safe_id'] ?>" class="js-deleteSafe" title="Delete">🗑️</button>
+                            </div>
+                        </li>
+                <?php 
+                    }
+                } 
+                ?>
             </ul>
         </div>
         <?php } else { ?>

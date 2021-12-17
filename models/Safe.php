@@ -28,6 +28,28 @@ class Safe extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAllByUserId($id){
+
+        $query = $this->db->prepare('
+            SELECT 
+                safes.safe_id,
+                safes.message,
+                (
+                    SELECT CONCAT(codes.code_1,"/",codes.code_2,"/",codes.code_3) 
+                    FROM codes
+                    WHERE codes.safe_id = safes.safe_id
+                ) AS code
+            FROM safes
+            WHERE safes.user_id = ?;
+        ');
+
+        $query->execute([
+            $id
+        ]);
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function get($id){
 
         $id = $this->sanitize(["id"=>$id]);
