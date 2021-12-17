@@ -9,14 +9,23 @@ $actions = [
 require('models/Safe.php');
 $model = new Safe();
 
-if (
-    !in_array($action, $actions)
-) {
-    http_response_code(404);
-    die('Not found...');
-}
-
 if(
+    $_SERVER['REQUEST_METHOD'] === "GET" &&
+    is_numeric($action)
+){
+    $id = $action;
+    $action = "show";
+
+    $result = $model->get($id);
+
+    if(
+        $result['isOk']
+    ){
+        $_SESSION['safe'] = $result['safe'];
+    } else {
+        $_SESSION['safe'] = [];
+    }
+} else if(
     $action === "create" &&
     isset($_POST['request'])
 ){
@@ -43,6 +52,14 @@ if(
 
         echo json_encode($result);
         die;
+}
+
+
+if (
+    !in_array($action, $actions)
+) {
+    http_response_code(404);
+    die('Not found...');
 }
 
 

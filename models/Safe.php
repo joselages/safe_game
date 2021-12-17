@@ -28,6 +28,59 @@ class Safe extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function get($id){
+
+        $id = $this->sanitize(["id"=>$id]);
+        $id = intval($id["id"]);
+
+        if ($id < 0) {
+            http_response_code(400);
+            return [
+                "isOk" => false,
+                "message" => "Bad request"
+             ];
+        }
+
+        $query= $this->db->prepare('
+            SELECT
+                CASE 
+                    WHEN safes.user_id IS NOT NULL 
+                        THEN (SELECT users.username FROM users WHERE users.user_id = safes.user_id)
+                    ELSE 
+                         safes.creator_name  
+                END AS safe_creator,
+                safes.message,
+                safes.created_at,
+                CONCAT(codes.code_1,"/",codes.code_2,"/",codes.code_3) AS code,
+                IF(safes.user_id IS NOT NULL, safes.user_id, 0) AS user_id
+            FROM safes 
+            INNER JOIN codes USING (safe_id)
+            WHERE safes.safe_id = ?;
+        ');
+
+        $query->execute([
+            $id
+        ]);
+
+        $safe = $query->fetch(PDO::FETCH_ASSOC);
+
+        if(empty($safe)){
+            http_response_code(404);
+            return [
+               "isOk" => false,
+               "message" => "Safe not found"
+            ];
+        }
+
+        $safe['code'] = explode('/',$safe['code']);
+
+        return [
+            "isOk" => true,
+            "message" => "all ok!",
+            "safe" => $safe
+         ];
+    }
+
 
     public function store($data, $picture = [])
     {
