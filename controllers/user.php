@@ -69,7 +69,7 @@ if (
 
 if ($action !== 'create') {
 
-    $user = $model->get($id);
+    $result = $model->get($id);
 }
 
 if (

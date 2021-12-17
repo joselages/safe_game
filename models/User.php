@@ -11,9 +11,17 @@ class User extends Base
     {
 
         $query = $this->db->prepare("
-            SELECT *
+            SELECT 
+                users.user_id, 
+                users.username,
+                users.created_at,
+                users.is_verified,
+                (SELECT COUNT(*)
+                 FROM safes 
+                 WHERE safes.user_id = users.user_id
+                ) as safeCount
             FROM users
-            WHERE user_id = ?
+            WHERE user_id = ?;
        ");
 
         $query->execute([$id]);
@@ -22,10 +30,24 @@ class User extends Base
 
         if (empty($user)) {
             http_response_code(404);
-            die('Not found...');
+            return [
+                "status" => false,
+                "message" => 'User not found'
+            ];
         }
 
-        return $user;
+        if ( $user['is_verified'] === "0" ) {
+            return [
+                "status" => false,
+                "message" => 'User not verified'
+            ];
+        }
+
+        return [
+            "status" => true,
+            "message" => 'all ok!',
+            'user' => $user
+        ];
     }
 
     public function store($data)

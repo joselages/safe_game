@@ -5,6 +5,7 @@
 
 <body>
     <main class="safe safe-form">
+        <?php if( $result['status']){ ?>
         <nav class="profile-nav">
             <button class="-active js-profileNav" data-link="profile">My profile</button>
             <button class="js-profileNav" data-link="list">My safes</button>
@@ -21,11 +22,11 @@
                     <a href="/user/edit" class="profile-edit">✏️ Edit profile</a>
 
                 <?php } ?>
-                <h2 class="profile-name"><?php echo $user['username']; ?></h2>
+                <h2 class="profile-name"><?php echo $result['user']['username']; ?></h2>
                 <dl class="profile-info">
                     <div>
                         <dt>Safes created</dt>
-                        <dd>00</dd>
+                        <dd><?php echo $result['user']['safeCount']; ?></dd>
                     </div>
                     <div>
                         <dt>Safes created cracked</dt>
@@ -41,7 +42,7 @@
                     </div>
                     <div>
                         <dt>User since</dt>
-                        <dd><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></dd>
+                        <dd><?php echo date('d/m/Y', strtotime($result['user']['created_at'])); ?></dd>
                     </div>
                 </dl>
             </section>
@@ -68,7 +69,9 @@
 
             </ul>
         </div>
-
+        <?php } else { ?>
+            <p role="alert" class="form-alert -negative"><?php echo $result['message'] ?></p>
+        <?php } ?>
     </main>
 
     <aside class="safe-modal -hidden js-deleteModal">
@@ -140,6 +143,7 @@
             });
         }
     </script>
+    
 </body>
 
 
