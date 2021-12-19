@@ -19,6 +19,7 @@ if (
     $safeModel = new Safe();
 
     $safes = $safeModel->getAllByUserId($id);
+    var_dump($safes);
 } else if (
     $action === 'edit'
 ) {
@@ -67,6 +68,11 @@ if (
     } else {
         $id = $_SESSION['user_id'];
         $action = 'show';
+
+        require('models/Safe.php');
+        $safeModel = new Safe();
+    
+        $safes = $safeModel->getAllByUserId($id);
     }
 }
 

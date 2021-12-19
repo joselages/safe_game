@@ -16,7 +16,7 @@
                 <?php
                 if (
                     isset($_SESSION['user_id']) &&
-                    $user['user_id'] == $_SESSION['user_id']
+                    $result['user']['user_id'] === $_SESSION['user_id']
                 ) {
                 ?>
                     <a href="/user/edit" class="profile-edit">✏️ Edit profile</a>
@@ -25,8 +25,8 @@
                 <h2 class="profile-name"><?php echo $result['user']['username']; ?></h2>
                 <dl class="profile-info">
                     <div>
-                        <dt>Safes created</dt>
-                        <dd><?php echo $result['user']['safeCount']; ?></dd>
+                        <dt>Safe count</dt>
+                        <dd class="js-safeCount"><?php echo $result['user']['safeCount']; ?></dd>
                     </div>
                     <div>
                         <dt>Safes created cracked</dt>
@@ -52,7 +52,7 @@
                 ){
                     foreach($safes as $safe){
                     ?>
-                        <li class="list-item">
+                        <li class="list-item" data-safe="<?php echo $safe['safe_id'] ?>">
                             <span class="item-state" title="This safe is still uncracked">🔒</span>
                             <div class="item-info">
                                 <div class="safe-link">
@@ -68,8 +68,8 @@
                                 <p class="item-message">✉️ <?php echo substr($safe['message'], 0, 15) ?>...</p>
                             </div>
                             <div class="item-btns">
-                                <button data-id="<?php echo $safe['safe_id'] ?>" title="Edit">✏️</button>
-                                <button data-id="<?php echo $safe['safe_id'] ?>" class="js-deleteSafe" title="Delete">🗑️</button>
+                                <button data-safe="<?php echo $safe['safe_id'] ?>" title="Edit">✏️</button>
+                                <button data-safe="<?php echo $safe['safe_id'] ?>" class="js-deleteSafe" title="Delete">🗑️</button>
                             </div>
                         </li>
                 <?php 
@@ -87,9 +87,16 @@
         <div>
             Are you sure you want to delete this safe?
             <div>
-                <button class="js-closeModal modal-close">&times;</button>
-                <button class="modal-delete">Delete this safe</button>
+                <button class="js-closeDeleteModal modal-close">&times;</button>
+                <button class="modal-delete js-confirmDeletion">Delete this safe</button>
             </div>
+        </div>
+    </aside>
+
+    <aside class="safe-modal -hidden js-deleteFeedbackModal">
+        <div>
+            <p></p>
+            <button class="js-closeFeedbackModal modal-close">&times;</button>
         </div>
     </aside>
 
@@ -126,20 +133,56 @@
 
         const deleteSafeBtns = document.querySelectorAll('.js-deleteSafe');
         const deleteModal = document.querySelector('.js-deleteModal');
-        const closeModal = document.querySelector('.js-closeModal');
+        const closeDeleteModal = document.querySelector('.js-closeDeleteModal');
+        const closeFeedbackModal = document.querySelector('.js-closeFeedbackModal');
+        const confirmDeletionBtn = document.querySelector('.js-confirmDeletion');
+        const deleteFeedbackModal = document.querySelector('.js-deleteFeedbackModal');
+        const safeCountEl = document.querySelector('.js-safeCount');
 
         for (deleteBtn of deleteSafeBtns) {
             deleteBtn.addEventListener('click', (e) => {
-                const safeId = e.target.dataset.id;
+                const safeId = e.target.dataset.safe;
 
-                deleteModal.dataset.id = safeId;
+                confirmDeletionBtn.dataset.safe = safeId;
                 deleteModal.classList.remove('-hidden')
             });
         }
 
-        closeModal.addEventListener('click', (e) => {
-            deleteModal.dataset.id = "";
+        confirmDeletionBtn.addEventListener('click', async (evt)=>{
+            const safeId = evt.target.dataset.safe;
+
+            const request = await fetch('/safe/'+safeId, {
+                method:'DELETE'
+            });
+
+            const response = await request.json();
+
+            if(
+                request.status === 202 ||
+                response['isDeleted']
+            ){
+                
+                document.querySelector(`.list-item[data-safe='${response['safe_id']}']`).remove();
+                const safeCount = Number(safeCountEl.innerHTML);
+                safeCountEl.innerHTML = safeCount - 1;
+
+            }
+
+            deleteFeedbackModal.firstElementChild.firstElementChild.textContent = response['message'];
             deleteModal.classList.add('-hidden');
+            deleteFeedbackModal.classList.remove('-hidden');
+        });
+
+        closeDeleteModal.addEventListener('click', (e) => {
+            deleteModal.dataset.safe = "";
+            deleteModal.classList.add('-hidden');
+        });
+
+        closeFeedbackModal.addEventListener('click', (e) => {
+            confirmDeletionBtn.dataset.safe = "";
+            deleteModal.dataset.safe = "";
+
+            deleteFeedbackModal.classList.add('-hidden');
         });
 
         const copyLinkBtns = document.querySelectorAll('.js-copyLink');
@@ -151,6 +194,8 @@
                 navigator.clipboard.writeText(linkToCopy);
             });
         }
+
+
     </script>
     
 </body>

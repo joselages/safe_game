@@ -10,6 +10,18 @@ require('models/Safe.php');
 $model = new Safe();
 
 if(
+    $_SERVER['REQUEST_METHOD'] === "DELETE" &&
+    is_numeric($action)
+){
+    header('Content-Type:application/json');
+    $id = $action;
+
+    $result = $model->delete($id);
+
+    echo json_encode($result);
+    die;
+}
+else if(
     $_SERVER['REQUEST_METHOD'] === "GET" &&
     is_numeric($action)
 ){

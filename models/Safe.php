@@ -250,4 +250,32 @@ class Safe extends Base
             "private" => $data['private']
         ];
     }
+
+    public function delete($id){
+
+        //basta apagar o cofre pq a tabela codes tem a constraint CASCADE ON DELETE
+        $query = $this->db->prepare('
+            DELETE FROM safes
+            WHERE safe_id = ?;
+        ');
+
+        $result = $query->execute([
+            $id
+        ]);
+
+        if($result === false){
+            http_response_code(500);
+            return [
+                'isDeleted' => false,
+                'message' => 'Something went wrong, please try again later'
+            ];
+        }
+
+        http_response_code(202);
+        return [
+            'isDeleted' => true,
+            'message' => 'Safe '.$id.' was successfully deleted.',
+            'safe_id' => $id
+        ];
+    }
 }
