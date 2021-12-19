@@ -61,10 +61,18 @@ else if(
     // echo json_encode($data);
     // die;
 
-    $result = $model->openSafe($_POST);
+    $result = $model->openSafe($data);
 
-    if($result['status'] ){
-        //enviar para a DB q o cofre foi aberto
+    if(
+        $result['status'] &&
+        (
+            ( $is_logged && ($_SESSION['user_id'] !== $_SESSION['safe']['user_id']) ) ||
+            !$is_logged
+        )
+    ){
+        $data['user_id'] = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
+
+        $model->registerOpen($data);
     }
 
     echo json_encode($result);

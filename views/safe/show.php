@@ -105,7 +105,6 @@
                     }
                 }
             };
-
             //config.randomSafeCode();
 
             const padlock = Draggable.create("#circle", {
@@ -170,10 +169,15 @@
 
                 toSend.set('request', 'checkCode');
                 toSend.set('safe_id', event.target.dataset.id);
+                
 
                 config.userInput.forEach((code, idx)=>{
                     toSend.set('code_'+(idx+1), code);
                 });
+
+                //info para se ganhar
+                toSend.set('seconds_to_crack', calculateSeconds());
+
 
                 const request = await fetch("/safe/show", {
                     method: "POST",
@@ -181,8 +185,6 @@
                 });
 
                 const response = await request.json();
-
-                console.log(response)
 
                 if(
                     request.status !== 200 ||
@@ -200,6 +202,15 @@
                 safeInside.innerHTML = messageToInject;
                 safeDoor.classList.add('-open');
             });
+
+            const startedDate = new Date();
+            function calculateSeconds(){
+                const now = new Date();
+
+                const msSpentCracking = now - startedDate;
+
+                return Math.round(msSpentCracking / 1000);
+            }
         </script>
     <?php } ?>
 </body>

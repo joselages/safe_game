@@ -145,6 +145,52 @@ class Safe extends Base
         ];
     }
 
+    public function wasCrackedByUser($data){
+
+        $query = $this->db->prepare('
+            SELECT user_id
+            FROM cracked_safes
+            WHERE user_id = ? AND safe_id = ?;
+        ');
+
+        $query->execute([
+            $data['user_id'],
+            $data['safe_id']
+        ]);
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if(empty($result)){
+            return false;
+        }
+
+        return true;
+    }
+
+    public function registerOpen($data){
+
+        if(
+            !empty($data['user_id']) &&
+            $this->wasCrackedByUser($data)
+        ){
+            return false;
+        }
+
+        $query = $this->db->prepare('
+            INSERT INTO cracked_safes
+            (safe_id, user_id, seconds_to_crack)
+            VALUES(?,?,?);
+        ');
+
+        $query->execute([
+            $data['safe_id'],
+            !empty($data['user_id']) ? $data['user_id'] : NULL,
+            $data['seconds_to_crack'],
+        ]);
+
+        return true;
+
+    }
 
     public function store($data, $picture = [])
     {
