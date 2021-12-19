@@ -251,16 +251,17 @@ class Safe extends Base
         ];
     }
 
-    public function delete($id){
+    public function delete($data){
 
         //basta apagar o cofre pq a tabela codes tem a constraint CASCADE ON DELETE
         $query = $this->db->prepare('
             DELETE FROM safes
-            WHERE safe_id = ?;
+            WHERE safe_id = ? AND user_id = ?;
         ');
 
         $result = $query->execute([
-            $id
+            $data['safe_id'],
+            $data['user_id']
         ]);
 
         if($result === false){
@@ -274,8 +275,8 @@ class Safe extends Base
         http_response_code(202);
         return [
             'isDeleted' => true,
-            'message' => 'Safe '.$id.' was successfully deleted.',
-            'safe_id' => $id
+            'message' => 'Safe '.$data['safe_id'].' was successfully deleted.',
+            'safe_id' => $data['safe_id']
         ];
     }
 }

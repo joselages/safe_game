@@ -13,10 +13,24 @@ if(
     $_SERVER['REQUEST_METHOD'] === "DELETE" &&
     is_numeric($action)
 ){
+
+    if(!$is_logged){
+        http_response_code(401);
+        echo json_encode([
+            'isDeleted' => false,
+            'message' => 'You don\'t have permission to do that...'
+        ]);
+        die;
+    }
+
+
     header('Content-Type:application/json');
     $id = $action;
+  
+    $data['safe_id'] = $id;
+    $data['user_id'] = $_SESSION['user_id'];
 
-    $result = $model->delete($id);
+    $result = $model->delete($data);
 
     echo json_encode($result);
     die;
