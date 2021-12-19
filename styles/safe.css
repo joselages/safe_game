@@ -804,6 +804,8 @@ a.profile-edit {
   font-size: 5rem;
   border-radius: 7px;
   white-space: nowrap;
+  min-width: 65px;
+  text-align: center;
 }
 
 .verification_email{

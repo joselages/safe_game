@@ -19,7 +19,6 @@ if (
     $safeModel = new Safe();
 
     $safes = $safeModel->getAllByUserId($id);
-    var_dump($safes);
 } else if (
     $action === 'edit'
 ) {

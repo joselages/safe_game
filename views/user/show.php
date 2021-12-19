@@ -25,20 +25,20 @@
                 <h2 class="profile-name"><?php echo $result['user']['username']; ?></h2>
                 <dl class="profile-info">
                     <div>
-                        <dt>Safe count</dt>
+                        <dt>Safe created</dt>
                         <dd class="js-safeCount"><?php echo $result['user']['safeCount']; ?></dd>
                     </div>
                     <div>
-                        <dt>Safes created cracked</dt>
-                        <dd>00</dd>
+                        <dt>Safes created cracked amount</dt>
+                        <dd><?php echo $result['user']['createdCracked']; ?></dd>
                     </div>
                     <div>
                         <dt>Safes cracked</dt>
-                        <dd>00</dd>
+                        <dd><?php echo $result['user']['crackedCount']; ?> </dd>
                     </div>
                     <div>
                         <dt>Total cracking time</dt>
-                        <dd>00m</dd>
+                        <dd><?php echo !empty($result['user']['crackingTime']) ? $result['user']['crackingTime'] : 0 ; ?>s</dd>
                     </div>
                     <div>
                         <dt>User since</dt>
@@ -59,6 +59,7 @@
                                     <span class="link"><?php echo ROOT .'safe/'.$safe['safe_id'] ?></span>
                                     <button class="copy-link js-copyLink" title="Copy to clipboard">📋</button>
                                 </div>
+                                
                                 <div class="item-code">
                                     <?php foreach(explode('/', $safe['code']) as $code){
                                         echo '<span>'.$code.'</span>';

@@ -16,10 +16,27 @@ class User extends Base
                 users.username,
                 users.created_at,
                 users.is_verified,
-                (SELECT COUNT(*)
-                 FROM safes 
-                 WHERE safes.user_id = users.user_id
-                ) as safeCount
+                (
+                    SELECT COUNT(*)
+                    FROM safes 
+                    WHERE safes.user_id = users.user_id
+                ) AS safeCount,
+                (
+                    SELECT COUNT(*)
+                    FROM cracked_safes AS cs 
+                    WHERE cs.user_id = users.user_id
+                ) AS crackedCount,
+                (
+                    SELECT COUNT(*)
+                    FROM cracked_safes AS cs
+                    INNER JOIN safes USING (safe_id)
+                    WHERE safes.user_id = users.user_id
+                ) AS createdCracked,
+                (
+                    SELECT SUM(seconds_to_crack)
+                    FROM cracked_safes AS cs 
+                    WHERE cs.user_id = users.user_id
+                ) AS crackingTime
             FROM users
             WHERE user_id = ?;
        ");

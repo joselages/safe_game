@@ -4,7 +4,7 @@ define("CONFIG",parse_ini_file('.env'));
 
 session_start();
  $is_logged = isset($_SESSION['user_id']);
-// session_destroy();
+session_destroy();
 
 $url_parts = explode('/', $_SERVER['REQUEST_URI']);
 
