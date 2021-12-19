@@ -60,18 +60,34 @@
                                     <button class="copy-link js-copyLink" title="Copy to clipboard">📋</button>
                                 </div>
                                 
-                                <div class="item-code">
-                                    <?php foreach(explode('/', $safe['code']) as $code){
-                                        echo '<span>'.$code.'</span>';
-                                    } ?>
+                                <?php if(
+                                    $is_logged &&
+                                    $_SESSION['user_id'] === $id
+                                ){ ?>
+                                    <div class="item-code">
+                                        <?php foreach(explode('/', $safe['code']) as $code){
+                                            echo '<span>'.$code.'</span>';
+                                        } ?>
 
+                                    </div>
+                                    <p class="item-message">✉️ <?php echo substr($safe['message'], 0, 15) ?>...</p>
+                                <?php 
+                                     }
+                                ?>
+                            </div>
+                            <?php if(
+                                    $is_logged &&
+                                    $_SESSION['user_id'] === $id
+                            ){ ?>
+                                <div class="item-btns">
+                                    <button data-safe="<?php echo $safe['safe_id'] ?>" title="Edit">✏️</button>
+                                    <button data-safe="<?php echo $safe['safe_id'] ?>" class="js-deleteSafe" title="Delete">🗑️</button>
                                 </div>
-                                <p class="item-message">✉️ <?php echo substr($safe['message'], 0, 15) ?>...</p>
-                            </div>
-                            <div class="item-btns">
-                                <button data-safe="<?php echo $safe['safe_id'] ?>" title="Edit">✏️</button>
-                                <button data-safe="<?php echo $safe['safe_id'] ?>" class="js-deleteSafe" title="Delete">🗑️</button>
-                            </div>
+                            <?php 
+                                } else {
+                                    echo '<a href="' . ROOT . 'safe/' . $safe['safe_id'] . '" class="item-play">Play</a>';
+                                }
+                            ?>
                         </li>
                 <?php 
                     }
