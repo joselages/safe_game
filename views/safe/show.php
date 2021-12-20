@@ -195,7 +195,7 @@
                 }
 
                 messageToInject =`
-                    ${ response["content"]['image_path'] ? '<img src="<?php echo ROOT ?>/uploads/20211215224508_312bd514.jpg">' : '' } 
+                    ${ response["content"]['image_path'] ? `<img src="<?php echo ROOT; ?>/${response["content"]['image_path']}">` : '' } 
                     ${ response["content"]['message'] }
                 `;
 

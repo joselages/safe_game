@@ -138,13 +138,11 @@ if (fileInput !== null) {
   });
 }
 
-for (copyBtn of copyLinkBtns) {
-  copyBtn.addEventListener("click", (e) => {
-    const linkToCopy = e.target.previousElementSibling.innerText;
+const copyLink = (el) => {
+    const linkToCopy = el.previousElementSibling.innerText;
 
     navigator.clipboard.writeText(linkToCopy);
-  });
-}
+};
 
 makeSafeForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -235,10 +233,12 @@ function showCreatedScreen(data){
   htmlToInject = `
           <h2>Your safe was created!</h2>
 
+          <p>${data["message"]}</p>
+
           <p>Here is your safe's link:</p>
           <div class="safe-link">
               <span class="link">www.site.com/${data["safe_id"]}</span>
-              <button class="copy-link js-copyLink" title="Copy to clipboard">📋</button>
+              <button class="copy-link" title="Copy to clipboard" onclick="copyLink(this)">📋</button>
           </div>
 
           <p>Here is your safe's cracking code:</p>

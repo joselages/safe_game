@@ -284,7 +284,7 @@ class Safe extends Base
         http_response_code(201);
         return [
             "safeCreated" => true,
-            "message" => "all ok!",
+            "message" => "Share the link with your friends!",
             "safe_id" => $safeId,
             "code" => [$data['code_1'], $data['code_2'], $data['code_3']],
             "private" => $data['private']

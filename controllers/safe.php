@@ -58,9 +58,6 @@ else if(
     header('Content-Type:application/json');
     $data = $_POST;
 
-    // echo json_encode($data);
-    // die;
-
     $result = $model->openSafe($data);
 
     if(
@@ -101,6 +98,23 @@ else if(
         $result = $model->store($data, $picture);
     } else {
         $result = $model->store($data);
+    }
+
+    if($result["safeCreated"] && $data['send-by'] === 'mail'){
+        require('./libs/php_mailer.php');
+
+        $emailInfo['send_to'] = $data['email-to'];
+        $emailInfo['username'] = 'Friend';
+        $emailInfo['subject'] = 'Try to crack this safe! There is something inside for you!';
+        $emailInfo['content'] = '<p>Hi friend!<br>I\'ve created this safe for you, so please try to crack it!<br><a href="localhost/safe/'.$result["safe_id"].'">Click here to play!</a></p>';
+
+        $mailSent = sendMail($emailInfo);
+
+        $result['message'] = 'Email sent! Your friend will recieve the safe link in his email.';
+
+        if($mailSent === false){
+            $result['message'] = 'Sorry...Couldn\'t send the email, copy the link and send it to your friend.';
+        }
     }
 
     echo json_encode($result);
