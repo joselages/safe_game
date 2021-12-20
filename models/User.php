@@ -117,7 +117,8 @@ class User extends Base
 
         return [
             'isStored' => true,
-            'message' => 'Please check your email to verify your account'
+            'message' => 'Please check your email to verify your account',
+            'user' => $data
         ];
     }
 

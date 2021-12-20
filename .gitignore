@@ -2,3 +2,5 @@
 /fonts
 /uploads
 .env
+/vendor
+composer.lock
