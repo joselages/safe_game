@@ -203,12 +203,6 @@ class Safe extends Base
             $validate->image($picture)
         ) {
             $image = $this->saveImage($picture); //cheio
-        } else {
-            http_response_code(400);
-            return [
-                "safeCreated" => false,
-                "message" => "Image not allowed"
-            ];
         }
 
         
