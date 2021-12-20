@@ -19,7 +19,7 @@
                     $result['user']['user_id'] === $_SESSION['user_id']
                 ) {
                 ?>
-                    <a href="/user/edit" class="profile-edit">✏️ Edit profile</a>
+                    <a href="/user/edit" class="profile-edit">✏️ Change password</a>
 
                 <?php } ?>
                 <h2 class="profile-name"><?php echo $result['user']['username']; ?></h2>

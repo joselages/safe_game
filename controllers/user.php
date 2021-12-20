@@ -34,12 +34,8 @@ if (
 
         $_POST["user_id"] = $_SESSION['user_id'];
 
-        $result = $model->edit($_POST);
-
-        $_SESSION['username'] = $_POST["username"];
+        $edit = $model->edit($_POST);
     }
-
-
 
     $id = $_SESSION['user_id'];
 } else if ($action === 'create') { //sign up
@@ -93,7 +89,6 @@ if (
 
 
 if ($action !== 'create') {
-
     $result = $model->get($id);
 }
 

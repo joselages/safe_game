@@ -5,22 +5,18 @@
 
 <body>
     <main class="safe safe-form">
-        <h1>Safe Edit Profile</h1>
+        <h1>Safe Change Password</h1>
         <div class="-door">
 
         <?php
         
-        if(isset($result['message'])){
-            $feedback = $result['isEdited'] ? '-positive' : '-negative';
-            echo '<p role="alert" class="form-alert '.$feedback.'">'.$result['message'].'</p>';
+        if(isset($edit['message'])){
+            $feedback = $edit['isEdited'] ? '-positive' : '-negative';
+            echo '<p role="alert" class="form-alert '.$feedback.'">'.$edit['message'].'</p>';
         }
         ?>
 
         <form class="make-form -big-inputs" action="/user/edit" method="post">
-            <label>
-                Name
-                <input type="text" name="username" minlength="2" maxlength="15" value="<?php echo $user['username'] ?>" required>
-            </label>
             <label>
                 Password
                 <input type="password" name="password" minlength="8" maxlength="1000" required>

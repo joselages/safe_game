@@ -136,32 +136,12 @@ class User extends Base
         }
 
         $query = $this->db->prepare('
-            SELECT username
-            FROM users
-            WHERE username = ? 
-        ');
-
-        $query->execute([
-            $data['username']
-        ]);
-
-        $user = $query->fetch(PDO::FETCH_ASSOC);
-
-        if(!empty($user)){
-            return [
-                "isEdited" => false,
-                "message" => "Username already taken"
-            ];
-        }
-
-        $query = $this->db->prepare('
             UPDATE users
-            SET username = ?, password = ?
+            SET password = ?
             WHERE user_id = ?;
         ');
 
        $result = $query->execute([
-            $data['username'],
             password_hash($data['password'], PASSWORD_DEFAULT),
             $data['user_id']
         ]);
