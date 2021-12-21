@@ -4,6 +4,8 @@
 <?php require('templates/head.php');?>
 
 <body>
+    <?php require('templates/nav.php'); ?>
+
     <main class="safe safe-form">
         <h1>Safe Change Password</h1>
         <div class="-door">

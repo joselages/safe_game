@@ -4,6 +4,9 @@
 <?php require('templates/head.php'); ?>
 
 <body>
+
+<?php require('templates/nav.php'); ?>
+
     <main class="safe safe-form">
         <?php if( $result['status']){ ?>
         <nav class="profile-nav">

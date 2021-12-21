@@ -4,6 +4,9 @@
 <?php require('templates/head.php');?>
 
 <body>
+<?php require('templates/nav.php'); ?>
+
+
     <main class="safe" >
         <?php if(empty($_SESSION["safe"])){ ?>
         

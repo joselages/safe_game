@@ -15,7 +15,8 @@ $controllers = [
     'user',
     'safe',
     'verification', 
-    'requests'
+    'requests',
+    'logout'
 ];
 
 $controller = !empty($url_parts[1]) ? $url_parts[1] : '';

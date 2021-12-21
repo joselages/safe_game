@@ -4,6 +4,9 @@
 <?php require('templates/head.php'); ?>
 
 <body>
+<?php require('templates/nav.php'); ?>
+
+
     <main class="safe home-page">
         <h1>Welcome to the Safe Game!</h1>
         <?php if ($is_logged) { ?>

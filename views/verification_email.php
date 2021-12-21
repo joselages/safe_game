@@ -4,6 +4,8 @@
 <?php require('templates/head.php');?>
 
 <body>
+    <?php require('templates/nav.php'); ?>
+
     <main class="safe">
         <section class="verification_email safe_door">
             <?php

@@ -849,6 +849,41 @@ a.profile-edit {
   border: 2px solid rgb(3, 88, 0);
 }
 
+.navigation{
+  position: fixed;
+  top: .5rem;
+  left: .5rem;
+}
+
+.navigation{
+  position: fixed;
+  top: 0rem;
+  left: 0rem;
+  bottom:0;
+  padding:.5rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  min-width: 120px;
+}
+
+.nav_item{
+  font-family: 'VT323', monospace;
+}
+
+.nav_item:not( :last-of-type ){
+  margin-bottom: 1rem;
+}
+
+.nav_item.-active{
+  pointer-events: none;
+  text-decoration: none;
+}
+
+.nav_item.-active::after{
+  content: '👉';
+  margin-left: 5px;
+}
+
+
 @media screen and (max-width: 900px) {
   :root {
     --safe-width: 100%;
