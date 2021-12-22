@@ -9,9 +9,7 @@ $actions = [
 require('models/User.php');
 $model = new User();
 
-if (
-    is_numeric($action)
-) { //get by id
+if ( is_numeric($action))  {
     $id = $action;
     $action = 'show';
 
@@ -20,9 +18,7 @@ if (
 
     $safes = $safeModel->getAllByUserId($id);
 
-} else if (
-    $action === 'edit'
-) {
+} else if ( $action === 'edit' ) {
 
     if (!$is_logged) {
         header('Location: ' . ROOT . '/login');
@@ -39,7 +35,7 @@ if (
     }
 
     $id = $_SESSION['user_id'];
-} else if ($action === 'create') { //sign up
+} else if ($action === 'create') { ////user/create
 
     if (isset($_POST['submit'])) {
 
@@ -69,7 +65,7 @@ if (
         header('Location: ' . ROOT . '/user');
         die;
     }
-} else { //ir para a raiz -> /
+} else if( empty($id) ) { //ir para a raiz -> /
 
     if (
         !$is_logged
@@ -87,26 +83,25 @@ if (
     }
 }
 
-
-
-if ($action !== 'create') {
-    $result = $model->get($id);
-
-    if(
-        isset($_SESSION['user_id']) &&
-        $result['user']['user_id'] === $_SESSION['user_id']
-    ){
-        $username = 'My';
-    } else {
-        $username =  $result['user']['username'];
-    }
-}
-
 if (
     !in_array($action, $actions)
 ) {
     http_response_code(404);
     die('Not found...');
 }
+
+if ($action !== 'create') {
+    $result = $model->get($id);
+
+    $username =  'My';
+    if(
+        !$is_logged &&
+        ( $result['status'] === false && $result['user']['user_id'] !== $_SESSION['user_id'] )
+    ){
+        $username = $result['user']['user_id'];
+    }
+}
+
+
 
 require('views/user/' . $action . '.php');
