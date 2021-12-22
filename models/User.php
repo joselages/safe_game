@@ -10,6 +10,9 @@ class User extends Base
     public function get($id)
     {
 
+        $id = $this->sanitize(["id"=>$id]);
+        $id = intval($id["id"]);
+
         $query = $this->db->prepare("
             SELECT 
                 users.user_id, 
@@ -77,7 +80,6 @@ class User extends Base
         if (
             $validate->signup($data) === false
         ) {
-
             return [
                 'isStored' => false,
                 'message' => 'Inputs not ok'
@@ -166,7 +168,6 @@ class User extends Base
 
         $sanitizedCode = $this->sanitize(["verification_code" => $verification_code]);
         $verification_code = $sanitizedCode["verification_code"];
-
 
         $validate = new Validate();
 

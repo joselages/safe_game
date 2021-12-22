@@ -114,10 +114,9 @@ class Safe extends Base
 
     public function openSafe($data){
 
-        $data['safe_id'] = intval($data['safe_id']);
-        $data['code_1'] = intval($data['code_1']);
-        $data['code_2'] = intval($data['code_2']);
-        $data['code_3'] = intval($data['code_3']);
+        foreach($data as $key => $value){
+            $data[$key] = intval($value);
+        }
 
         $query= $this->db->prepare('
             SELECT 
@@ -302,6 +301,8 @@ class Safe extends Base
     }
 
     public function delete($data){
+
+        $data = $this->sanitize($data);
 
         //basta apagar o cofre pq a tabela codes tem a constraint CASCADE ON DELETE
         $query = $this->db->prepare('

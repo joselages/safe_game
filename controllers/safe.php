@@ -27,7 +27,7 @@ if(
     header('Content-Type:application/json');
     $id = $action;
   
-    $data['safe_id'] = $id;
+    $data['safe_id'] = intval($id);
     $data['user_id'] = $_SESSION['user_id'];
 
     $result = $model->delete($data);
