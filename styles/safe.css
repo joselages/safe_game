@@ -661,11 +661,15 @@ button.safe_open-btn:active {
 }
 
 .item-info :is(p, .item-message) {
+  text-align: center;
   width: 100%;
   padding: 0.25rem;
   border-radius: 5px;
   background: #000;
   color: yellowgreen;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-info p.item-message,

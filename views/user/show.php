@@ -10,8 +10,8 @@
     <main class="safe safe-form">
         <?php if( $result['status']){ ?>
         <nav class="profile-nav">
-            <button class="-active js-profileNav" data-link="profile">My profile</button>
-            <button class="js-profileNav" data-link="list">My safes</button>
+            <button class="-active js-profileNav" data-link="profile"><?php echo $username;?> profile</button>
+            <button class="js-profileNav" data-link="list"><?php echo $username;?> safes</button>
         </nav>
         <div class="profile-container">
 
@@ -54,12 +54,21 @@
                     !empty($safes)
                 ){
                     foreach($safes as $safe){
+                        if(
+                            $safe['is_private'] === '1' && 
+                            ( $is_logged && $result['user']['user_id'] !== $_SESSION['user_id'] )
+                        ) {
+                            continue;
+                        }
+
+                        $crackedIcon = empty($safe['was_cracked']) ? '🔒' : '🔓' ;
+                        $crackedTitle =  empty($safe['was_cracked']) ? 'This safe is still uncracked' : 'This safe was cracked' ;
                     ?>
                         <li class="list-item" data-safe="<?php echo $safe['safe_id'] ?>">
-                            <span class="item-state" title="This safe is still uncracked">🔒</span>
+                            <?php echo '<span class="item-state" title="'.$crackedTitle.'">'.$crackedIcon.'</span>'; ?>
                             <div class="item-info">
                                 <div class="safe-link">
-                                    <span class="link"><?php echo ROOT .'safe/'.$safe['safe_id'] ?></span>
+                                    <span class="link"><?php echo $host .'/safe/'.$safe['safe_id'] ?></span>
                                     <button class="copy-link js-copyLink" title="Copy to clipboard">📋</button>
                                 </div>
                                 
@@ -88,7 +97,7 @@
                                 </div>
                             <?php 
                                 } else {
-                                    echo '<a href="' . ROOT . 'safe/' . $safe['safe_id'] . '" class="item-play">Play</a>';
+                                    echo '<a href="/safe/' . $safe['safe_id'] . '" class="item-play">Play</a>';
                                 }
                             ?>
                         </li>

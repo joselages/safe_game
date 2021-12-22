@@ -2,7 +2,6 @@
 
 require_once('Base.php');
 require_once(ROOT . 'controllers/validation/validate.php');
-
 class Safe extends Base
 {
     public function getAllPublic()
@@ -38,7 +37,14 @@ class Safe extends Base
                     SELECT CONCAT(codes.code_1,"/",codes.code_2,"/",codes.code_3) 
                     FROM codes
                     WHERE codes.safe_id = safes.safe_id
-                ) AS code
+                ) AS code,
+                safes.is_private,
+                (
+                    SELECT cs.safe_id 
+                    FROM cracked_safes as cs
+                    WHERE cs.safe_id = safes.safe_id 
+                    LIMIT 1 
+                ) AS was_cracked
             FROM safes
             WHERE safes.user_id = ?;
         ');

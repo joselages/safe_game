@@ -19,6 +19,7 @@ if (
     $safeModel = new Safe();
 
     $safes = $safeModel->getAllByUserId($id);
+
 } else if (
     $action === 'edit'
 ) {
@@ -90,6 +91,15 @@ if (
 
 if ($action !== 'create') {
     $result = $model->get($id);
+
+    if(
+        isset($_SESSION['user_id']) &&
+        $result['user']['user_id'] === $_SESSION['user_id']
+    ){
+        $username = 'My';
+    } else {
+        $username =  $result['user']['username'];
+    }
 }
 
 if (

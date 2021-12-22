@@ -21,7 +21,7 @@
                     <li class="list-item">
                         <span class="item-state" title="This safe is still uncracked">🔒</span>
                         <div class="item-info">
-                            <p title="Click to copy link">🔗 ' . ROOT . 'safe/' . $safe['safe_id'] . '</p>
+                            <p>' . $host . '/safe/' . $safe['safe_id'] . '</p>
                             <div class="item-line">
                                 <a href="' . ROOT . 'safe/' . $safe['safe_id'] . '" class="item-play">Play</a>
                                 <div>

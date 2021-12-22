@@ -19,12 +19,14 @@ $controllers = [
     'logout'
 ];
 
+$host = $_SERVER['HTTP_HOST'];
 $controller = !empty($url_parts[1]) ? $url_parts[1] : '';
 $action = !empty($url_parts[2]) ? $url_parts[2] : '';
 $id = !empty($url_parts[3]) ? $url_parts[3] : '';
 
 
 if (empty($controller)) {
+
     require('models/Safe.php');
     $model=new Safe();
 
