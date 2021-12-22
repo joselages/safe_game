@@ -17,9 +17,12 @@
         <ul class="safe-list">
             <?php
             foreach ($safes as $safe) {
+                $crackedIcon = empty($safe['was_cracked']) ? '🔒' : '🔓' ;
+                $crackedTitle =  empty($safe['was_cracked']) ? 'This safe is still uncracked' : 'This safe was cracked' ;
+                
                 echo '
                     <li class="list-item">
-                        <span class="item-state" title="This safe is still uncracked">🔒</span>
+                        <span class="item-state" title="'.$crackedTitle.'">'.$crackedIcon.'</span>
                         <div class="item-info">
                             <p>' . $host . '/safe/' . $safe['safe_id'] . '</p>
                             <div class="item-line">

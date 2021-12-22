@@ -7,8 +7,6 @@ class Safe extends Base
     public function getAllPublic()
     {
 
-        /* FALTA RETORNAR O NUMERO DE VEZES Q O COFRE FOI ABERTO */
-
         $query = $this->db->prepare('
             SELECT 
                 safes.safe_id,
@@ -17,7 +15,13 @@ class Safe extends Base
                         THEN (SELECT users.username FROM users WHERE users.user_id = safes.user_id)
                     ELSE 
                         safes.creator_name  
-                END as creator_name
+                END as creator_name,
+                (
+                    SELECT cs.safe_id 
+                    FROM cracked_safes as cs
+                    WHERE cs.safe_id = safes.safe_id 
+                    LIMIT 1 
+                ) AS was_cracked
             FROM safes
             WHERE safes.is_private = 0;
         ');
