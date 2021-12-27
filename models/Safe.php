@@ -1,7 +1,7 @@
 <?php
 
 require_once('Base.php');
-require_once(ROOT . 'controllers/validation/validate.php');
+require_once(ROOT . 'controllers/helpers/validate.php');
 class Safe extends Base
 {
     public function getAllPublic()
@@ -300,6 +300,23 @@ class Safe extends Base
         ];
     }
 
+    public function getImageToDelete($data){
+        $data = $this->sanitize($data);
+
+        $query = $this->db->prepare('
+            SELECT image_path
+            FROM safes
+            WHERE safe_id = ? AND user_id = ?;
+        ');
+
+        $query->execute([
+            $data['safe_id'],
+            $data['user_id']
+        ]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function delete($data){
 
         $data = $this->sanitize($data);
@@ -309,6 +326,7 @@ class Safe extends Base
             DELETE FROM safes
             WHERE safe_id = ? AND user_id = ?;
         ');
+
 
         $result = $query->execute([
             $data['safe_id'],
@@ -322,6 +340,18 @@ class Safe extends Base
                 'message' => 'Something went wrong, please try again later'
             ];
         }
+
+        $deletedRow = $query->rowCount();
+
+        if( $deletedRow !== 1 ){
+            http_response_code(400);
+            return [
+                'isDeleted' => false,
+                'message' => 'That safe does not exist or it\'s not yours...'
+            ];
+        }
+
+
 
         http_response_code(202);
         return [

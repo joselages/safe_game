@@ -1,7 +1,7 @@
 <?php
 
 require_once('Base.php');
-require_once(ROOT . 'controllers/validation/validate.php');
+require_once(ROOT . 'controllers/helpers/validate.php');
 
 
 class User extends Base

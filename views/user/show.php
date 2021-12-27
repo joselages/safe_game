@@ -190,11 +190,9 @@
                 request.status === 202 ||
                 response['isDeleted']
             ){
-                
                 document.querySelector(`.list-item[data-safe='${response['safe_id']}']`).remove();
                 const safeCount = Number(safeCountEl.innerHTML);
                 safeCountEl.innerHTML = safeCount - 1;
-
             }
 
             deleteFeedbackModal.firstElementChild.firstElementChild.textContent = response['message'];

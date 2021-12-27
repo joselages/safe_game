@@ -23,14 +23,22 @@ if(
         die;
     }
 
-
     header('Content-Type:application/json');
     $id = $action;
   
     $data['safe_id'] = intval($id);
     $data['user_id'] = $_SESSION['user_id'];
 
+    $safeToDelete=$model->getImageToDelete($data);
     $result = $model->delete($data);
+
+    if(
+        $result['isDeleted'] &&
+        !empty($safeToDelete['image_path'])
+    ){
+        require_once('helpers/deleteFile.php');
+        deleteFile($safeToDelete['image_path']);
+    }
 
     echo json_encode($result);
     die;
