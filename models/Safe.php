@@ -23,7 +23,8 @@ class Safe extends Base
                     LIMIT 1 
                 ) AS was_cracked
             FROM safes
-            WHERE safes.is_private = 0;
+            WHERE safes.is_private = 0
+            ORDER BY safes.created_at DESC;
         ');
 
         $query->execute();
@@ -50,7 +51,8 @@ class Safe extends Base
                     LIMIT 1 
                 ) AS was_cracked
             FROM safes
-            WHERE safes.user_id = ?;
+            WHERE safes.user_id = ?
+            ORDER BY safes.created_at DESC;            
         ');
 
         $query->execute([
