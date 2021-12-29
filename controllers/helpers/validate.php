@@ -107,6 +107,27 @@ class Validate extends Base{
 
     }
 
+    public function safeEdit($data){
+        if(
+            (//validar mensagem 
+                mb_strlen($data['message'])>8 && mb_strlen($data['message'])<140 
+            ) &&
+            is_numeric($data['code_1']) && //verificar se codigo é um numero
+            ( //verificar intervalo dos digitos do codigo
+               ( $data['code_1'] >= 0 && $data['code_1'] <= 40 ) &&
+               ( $data['code_2'] >= 0 && $data['code_2'] <= 40 ) &&
+               ( $data['code_3'] >= 0 && $data['code_3'] <= 40 )
+            ) &&
+            (//verificar se o codigo é todo o mesmo
+                 ($data['code_1'] === $data['code_2']) && ($data['code_2'] === $data['code_3']) 
+            ) === false
+        ){
+            return true;
+        }
+
+        return false;
+    }
+
     public function image($file){
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $fileFormat = finfo_file($finfo, $file['tmp_name']);

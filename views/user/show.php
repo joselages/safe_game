@@ -92,8 +92,8 @@
                                     $_SESSION['user_id'] === $id
                             ){ ?>
                                 <div class="item-btns">
-                                    <button data-safe="<?php echo $safe['safe_id'] ?>" title="Edit">✏️</button>
-                                    <button data-safe="<?php echo $safe['safe_id'] ?>" class="js-deleteSafe" title="Delete">🗑️</button>
+                                    <a class="item-btn" href="safe/edit/<?php echo $safe['safe_id'] ?>" title="Edit">✏️</a>
+                                    <button data-safe="<?php echo $safe['safe_id'] ?>" class="item-btn js-deleteSafe" title="Delete">🗑️</button>
                                 </div>
                             <?php 
                                 } else {

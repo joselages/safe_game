@@ -114,6 +114,159 @@ class Safe extends Base
          ];
     }
 
+    public function getAllInfo($data){
+        
+        $data = $this->sanitize($data);
+        foreach($data as $key => $value){
+            $data[$key] = intval($value);
+        }
+
+        if ($data['safe_id'] < 0) {
+            http_response_code(400);
+            return [
+                "isOk" => false,
+                "message" => "Bad request"
+             ];
+        }
+
+        $query= $this->db->prepare('
+            SELECT
+                safes.safe_id,
+                safes.user_id,
+                safes.message,
+                safes.image_path,
+                safes.created_at,
+                safes.is_private,
+                CONCAT(codes.code_1,"/",codes.code_2,"/",codes.code_3) AS code,
+                IF(safes.user_id IS NOT NULL, safes.user_id, 0) AS user_id
+            FROM safes 
+            INNER JOIN codes USING (safe_id)
+            WHERE safes.safe_id = ? AND safes.user_id = ?;
+        ');
+
+        $query->execute([
+            $data['safe_id'],
+            $data['user_id']
+        ]);
+
+        $safe = $query->fetch(PDO::FETCH_ASSOC);
+
+        if(empty($safe)){
+            http_response_code(404);
+            return [
+               "isOk" => false,
+               "message" => "Safe not found"
+            ];
+        }
+
+        $safe['code'] = explode('/',$safe['code']);
+
+        return [
+            "isOk" => true,
+            "message" => "all ok!",
+            "safe" => $safe
+         ];
+    }
+
+    public function edit($data){
+        
+        $picture = $data['picture'];
+        unset($data['picture']);
+        
+        $data = $this->sanitize($data);
+        
+        $validate = new Validate();
+
+
+        //resto da info
+        if ($validate->safeEdit($data) === false) {
+            http_response_code(400);
+            return [
+                "status" => false,
+                "message" => "Inputs not ok"
+            ];
+        }
+
+
+        //imagem
+        if (
+            !empty($picture) &&
+            !isset($data['delete_image']) &&
+            $validate->image($picture)
+        ) {
+            $image = $this->saveImage($picture);
+        }
+
+        if (
+            !isset($data['delete_image']) &&
+            (
+                (!empty($picture) && empty($image)) ||
+                (!empty($image) && $image['isSaved'] === false )
+            )
+        ) {
+            http_response_code(500);
+            return [
+                "status" => false,
+                "message" => "Error on uploading image"
+            ];
+        }
+
+
+        if(
+            empty($image) &&
+            !isset($data['delete_image'])
+        ){
+            $updateImgPath = $data['old_image'];
+        } else if(
+            !empty($image) &&
+            !isset($data['delete_image'])
+        ) {
+            $updateImgPath = $image['path'];
+        } else {
+            $updateImgPath = NULL;
+        }
+
+
+
+
+        $query = $this->db->prepare('
+            UPDATE safes
+            INNER JOIN codes ON safes.safe_id = codes.safe_id
+            SET 
+                safes.message = ?,
+                safes.image_path = ?,
+                safes.is_private = ?,
+                codes.code_1 = ?,
+                codes.code_2 = ?,
+                codes.code_3 = ?
+            WHERE safes.safe_id = ? AND safes.user_id = ?;
+        ');
+
+       $result = $query->execute([
+            $data['message'],
+            $updateImgPath,
+            isset($data['private']) ? 1 : 0,
+            $data['code_1'],
+            $data['code_2'],
+            $data['code_3'],
+            $data['safe_id'],
+            $data['user_id']
+        ]);
+
+        if($result === false){
+            http_response_code(500);
+            return [
+                "status" => false,
+                "message" => 'Something went wrong, please try again later.'
+            ];
+        }
+
+        return [
+            "status" => true,
+            "message" => 'Info updated with success!'
+        ];
+    }
+
     public function openSafe($data){
 
         foreach($data as $key => $value){
@@ -206,8 +359,24 @@ class Safe extends Base
     public function store($data, $picture = [])
     {
 
-
         $validate = new Validate();
+
+        $data = $this->sanitize($data);
+
+        //cast
+        $data['private'] = ($data['private'] === 'true') ? true : false;
+        $data['code_1'] = intval($data['code_1']);
+        $data['code_2'] = intval($data['code_2']);
+        $data['code_3'] = intval($data['code_3']);
+        
+        
+        if ($validate->safeCreate($data) === false) {
+            http_response_code(400);
+            return [
+                "safeCreated" => false,
+                "message" => "Inputs not ok"
+            ];
+        }
 
         if (
             !empty($picture) &&
@@ -229,22 +398,6 @@ class Safe extends Base
             ];
         }
 
-        $data = $this->sanitize($data);
-
-        //cast
-        $data['private'] = ($data['private'] === 'true') ? true : false;
-        $data['code_1'] = intval($data['code_1']);
-        $data['code_2'] = intval($data['code_2']);
-        $data['code_3'] = intval($data['code_3']);
-        
-        
-        if ($validate->safeCreate($data) === false) {
-            http_response_code(400);
-            return [
-                "safeCreated" => false,
-                "message" => "Inputs not ok"
-            ];
-        }
 
         //inserir tudo na BD
         $query = $this->db->prepare('

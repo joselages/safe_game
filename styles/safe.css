@@ -323,10 +323,17 @@ button.safe_open-btn:active {
 }
 
 .form-radios,
-.form-code {
+.form-code,
+.form-image-display {
   display: flex;
   justify-content: center;
   gap: 4rem;
+}
+
+.form-image-display{
+  gap: .75rem;
+  align-items: flex-end;
+  margin-bottom: 1rem;
 }
 
 .form-radios * {
@@ -362,6 +369,7 @@ button.safe_open-btn:active {
 
 .form-code input {
   width: 40px;
+  text-align: center;
 }
 
 .make-form button {
@@ -681,20 +689,25 @@ button.safe_open-btn:active {
   margin-left: auto;
 }
 
-.item-btns button {
+.item-btns > .item-btn{
   outline: none;
   border: none;
-  padding: 0.25rem;
+  height: 35px;
+  aspect-ratio: 1;
   border-radius: 5px;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0);
+  text-decoration: none;
+  font-size: 1rem;
+  display: inline-grid;
+  place-items: center;
 }
 
-.item-btns button:hover {
+.item-btns > .item-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.item-btns button:active {
+.item-btns > .item-btn:active {
   transform: scale(0.95);
 }
 
@@ -851,6 +864,20 @@ a.profile-edit {
   background-color: rgb(123, 236, 95);
   color: rgb(3, 88, 0);
   border: 2px solid rgb(3, 88, 0);
+}
+
+.safe_image{
+  height: 75px;
+  width: 75px;
+  border: 2px solid rgb(90, 90, 90);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.safe_image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .navigation{
