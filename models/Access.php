@@ -55,4 +55,63 @@ class Access extends Base {
             "message" => $user
         ];
     }
+
+    public function loginAdmin($data){
+        $data = $this->sanitize($data);
+         
+        $validate = new Validate();
+
+        if($validate->login($data) === false){
+            http_response_code(400);
+            return [
+                "isAdmin" => false,
+                "message" => "Inputs not ok"
+            ];
+        }
+
+        $query = $this->db->prepare('
+            SELECT user_id, username, password, is_verified, is_admin
+            FROM users
+            WHERE email = ?;
+        ');
+
+        $query->execute([$data['email']]);
+
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+
+        if(empty($user)){
+            return [
+                "isAdmin" => false,
+                "message" => 'No account with that email'
+            ];
+        }
+
+        if($user["is_verified"] !== "1"){
+            return [
+                "isAdmin" => false,
+                "message" => 'Please check your email and verify your account'
+            ];
+        }
+
+        if($user["is_admin"] !== "1"){
+            return [
+                "isAdmin" => false,
+                "message" => 'Not an admin...Sorry'
+            ];
+        }
+
+        if(
+            password_verify($data['password'],$user['password']) === false
+        ){
+            return [
+                "isAdmin" => false,
+                "message" => 'Wrong email or password'
+            ];
+        }
+
+        return[
+            "isAdmin" => true,
+            "message" => $user
+        ];
+    }
 }

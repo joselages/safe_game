@@ -7,8 +7,8 @@
     <?php require('templates/nav.php'); ?>
 
 
-    <main class="safe safe-form">
-        <h1>Safe Login</h1>
+    <main class="safe safe-form -admin">
+        <h1>Admin Login</h1>
         <div class="-door">
 
         <?php
@@ -17,7 +17,7 @@
         }
         ?>
 
-        <form class="make-form -big-inputs" action="/login" method="post">
+        <form class="make-form -big-inputs" action="/admin/login" method="post">
             <label>
                 Email
                 <input type="email" name="email" required>

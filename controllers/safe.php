@@ -13,8 +13,10 @@ if (
     $_SERVER['REQUEST_METHOD'] === "DELETE" &&
     is_numeric($action)
 ) {
-
-    if (!$is_logged) {
+    
+    if (
+        !$is_logged
+    ) {
         http_response_code(401);
         echo json_encode([
             'isDeleted' => false,
@@ -28,9 +30,16 @@ if (
 
     $data['safe_id'] = intval($id);
     $data['user_id'] = $_SESSION['user_id'];
-
     $safeToDelete = $model->getImageToDelete($data);
-    $result = $model->delete($data);
+
+    if(
+        isset($_SESSION['admin'])
+    ){
+        $result = $model->adminDelete($data);
+    } else {
+        $result = $model->delete($data);
+
+    }
 
     if (
         $result['isDeleted'] &&

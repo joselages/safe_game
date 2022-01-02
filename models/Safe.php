@@ -32,6 +32,36 @@ class Safe extends Base
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function adminGetAll(){
+        
+        $query = $this->db->prepare('
+            SELECT 
+                safes.safe_id,
+                CASE
+                    WHEN safes.user_id IS NOT NULL 
+                        THEN (SELECT users.username FROM users WHERE users.user_id = safes.user_id)
+                    ELSE 
+                        safes.creator_name  
+                END as creator_name,
+                (
+                    SELECT cs.safe_id 
+                    FROM cracked_safes as cs
+                    WHERE cs.safe_id = safes.safe_id 
+                    LIMIT 1 
+                ) AS was_cracked,
+                safes.message,
+                CONCAT(codes.code_1,"/",codes.code_2,"/",codes.code_3) AS code
+            FROM safes
+            INNER JOIN codes USING (safe_id)
+            ORDER BY safes.created_at DESC;
+        ');
+
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     public function getAllByUserId($id){
 
         $query = $this->db->prepare('
@@ -486,6 +516,49 @@ class Safe extends Base
         $result = $query->execute([
             $data['safe_id'],
             $data['user_id']
+        ]);
+
+        if($result === false){
+            http_response_code(500);
+            return [
+                'isDeleted' => false,
+                'message' => 'Something went wrong, please try again later'
+            ];
+        }
+
+        $deletedRow = $query->rowCount();
+
+        if( $deletedRow !== 1 ){
+            http_response_code(400);
+            return [
+                'isDeleted' => false,
+                'message' => 'That safe does not exist or it\'s not yours...'
+            ];
+        }
+
+
+
+        http_response_code(202);
+        return [
+            'isDeleted' => true,
+            'message' => 'Safe '.$data['safe_id'].' was successfully deleted.',
+            'safe_id' => $data['safe_id']
+        ];
+    }
+
+    public function adminDelete($data){
+
+        $data = $this->sanitize($data);
+
+        //basta apagar o cofre pq a tabela codes tem a constraint CASCADE ON DELETE
+        $query = $this->db->prepare('
+            DELETE FROM safes
+            WHERE safe_id = ?;
+        ');
+
+
+        $result = $query->execute([
+            $data['safe_id']
         ]);
 
         if($result === false){

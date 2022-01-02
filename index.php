@@ -11,6 +11,7 @@ session_start();
 $url_parts = explode('/', $_SERVER['REQUEST_URI']);
 
 $controllers = [
+    'admin',
     'login',
     'user',
     'safe',

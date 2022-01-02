@@ -24,9 +24,9 @@ $navArray = [
                     continue;
                 }
 
-                $isActive = $_SERVER['REQUEST_URI'] === $key ? '-active' : '' ;
+                $isActive = $_SERVER['REQUEST_URI'] === $key ? 'aria-current="page"' : '' ;
 
-                echo  '<li class="nav_item '.$isActive.'"><a href="'.$key.'">'.$value.'</a></li>';
+                echo  '<li class="nav_item" '.$isActive.'><a href="'.$key.'">'.$value.'</a></li>';
                 }
             ?>
         </ul>

@@ -220,4 +220,68 @@ class User extends Base
             "message" => "The account with the email " . $user['email'] . " has been verified!"
         ];
     }
+
+    public function adminGetAll(){
+
+        $query = $this->db->prepare("
+            SELECT 
+                users.user_id, 
+                users.username,
+                users.email,
+                users.created_at,
+                users.is_verified,
+                users.is_admin,
+                (
+                    SELECT COUNT(*)
+                    FROM safes 
+                    WHERE safes.user_id = users.user_id
+                ) AS safeCount
+            FROM users;
+       ");
+
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function adminDelete($id){
+        $id = $this->sanitize(['user_id' => $id]);
+        $id = intval($id['user_id']);
+
+        //basta apagar o user pq a tabela safes tem a constraint CASCADE ON DELETE
+        $query = $this->db->prepare('
+            DELETE FROM users
+            WHERE user_id = ?;
+        ');
+
+
+        $result = $query->execute([
+            $id
+        ]);
+
+        if($result === false){
+            http_response_code(500);
+            return [
+                'isDeleted' => false,
+                'message' => 'Something went wrong, please try again later'
+            ];
+        }
+
+        $deletedRow = $query->rowCount();
+
+        if( $deletedRow !== 1 ){
+            http_response_code(400);
+            return [
+                'isDeleted' => false,
+                'message' => 'That user does not exist'
+            ];
+        }
+
+        http_response_code(202);
+        return [
+            'isDeleted' => true,
+            'message' => 'User '.$id.' was successfully deleted.',
+            'user_id' => $id
+        ];
+    }
 }
