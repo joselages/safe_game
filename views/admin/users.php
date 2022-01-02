@@ -21,12 +21,13 @@
                             <div class="item-info -user">
                                 <span>Username: <p><?php echo $user['username']; ?></p></span>
                                 <span>Email: <p><?php echo $user['email']; ?></p></span>
-                                <span>User desde:<p><?php echo $user['created_at']; ?></p></span>
-                                <span>Cofres: <p><?php echo $user['safeCount']; ?></p></span>
+                                <span>User since:<p><?php echo $user['created_at']; ?></p></span>
+                                <span>safes: <p><?php echo $user['safeCount']; ?></p></span>
 
+                                <span>Click to change permissions:</span>
                                 <div class="flex space-between">
-                                    <span>Verified:<span><?php echo $user['is_verified'] ? '✅' : '❌'; ?></span></span>
-                                    <span>Admin:<span><?php echo $user['is_admin'] ? '✅' : '❌'; ?></span></span>
+                                    <span>Verified:<span data-verified="<?php echo $user['is_verified']; ?>" data-id="<?php echo $user['user_id']; ?>" class="user_btn js-verificationUserBtn"><?php echo $user['is_verified'] ? '✅' : '❌'; ?></span></span>
+                                    <span>Admin:<span data-admin="<?php echo $user['is_admin']; ?>" data-id="<?php echo $user['user_id']; ?>" class="user_btn js-adminUserBtn"><?php echo $user['is_admin'] ? '✅' : '❌'; ?></span></span>
                                 </div>
                             </div>
 
@@ -109,6 +110,62 @@
 
             deleteFeedbackModal.classList.add('-hidden');
         });
+
+        const verificationBtn = document.querySelectorAll('.js-verificationUserBtn');
+
+        for (btn of verificationBtn) {
+            btn.addEventListener('click', async (e) => {
+                const userId = e.target.dataset.id;
+                const verifiedStatus = e.target.dataset.verified;
+
+                const request = await fetch('/admin/users/' + userId, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        "request": "verificationChange",
+                        'is_admin': verifiedStatus,
+                        "user_id" : userId
+                    })
+                });
+
+                const response = await request.json();
+
+                if (
+                    request.status === 202 ||
+                    response['isOk']
+                ) {
+                    e.target.dataset.verified = response['is_verified'];
+                    e.target.textContent = response['is_verified'] ? '✅' : '❌';
+                }
+            })
+        }
+
+        const adminBtn = document.querySelectorAll('.js-adminUserBtn');
+
+        for (btn of adminBtn) {
+            btn.addEventListener('click', async (e) => {
+                const userId = e.target.dataset.id;
+                const adminStatus = e.target.dataset.admin;
+
+                const request = await fetch('/admin/users/' + userId, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        "request": "adminChange",
+                        'is_admin': adminStatus,
+                        "user_id" : userId
+                    })
+                });
+
+                const response = await request.json();
+
+                if (
+                    request.status === 202 ||
+                    response['isOk']
+                ) {
+                    e.target.dataset.admin = response['is_admin'];
+                    e.target.textContent = response['is_admin'] ? '✅' : '❌';
+                }
+            })
+        }
     </script>
 
 </body>

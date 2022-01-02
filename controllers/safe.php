@@ -38,7 +38,6 @@ if (
         $result = $model->adminDelete($data);
     } else {
         $result = $model->delete($data);
-
     }
 
     if (

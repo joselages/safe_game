@@ -165,7 +165,6 @@ class User extends Base
     public function verifyUser($verification_code)
     {
 
-
         $sanitizedCode = $this->sanitize(["verification_code" => $verification_code]);
         $verification_code = $sanitizedCode["verification_code"];
 
@@ -270,7 +269,7 @@ class User extends Base
         $deletedRow = $query->rowCount();
 
         if( $deletedRow !== 1 ){
-            http_response_code(400);
+            http_response_code(404);
             return [
                 'isDeleted' => false,
                 'message' => 'That user does not exist'
@@ -282,6 +281,113 @@ class User extends Base
             'isDeleted' => true,
             'message' => 'User '.$id.' was successfully deleted.',
             'user_id' => $id
+        ];
+    }
+
+    public function adminVerificationChange($data){
+        $data = $this->sanitize($data);
+        foreach($data as $key => $value){
+            $data[$key] = intval($value);
+        }
+
+        $validate = new Validate();
+
+        if ($validate->adminVerify($data) === false) {
+            http_response_code(400);
+            return [
+                'isOk' => false,
+                'message' => 'Inputs not ok..'
+            ];
+        }
+
+        $query = $this->db->prepare("
+            UPDATE users
+            SET is_verified = ?
+            WHERE user_id = ?;
+       ");
+
+        $result = $query->execute([
+            $data['is_verified'] === 0 ? 1 : 0,
+            $data['user_id']
+        ]);
+
+        if ($result === false) {
+            http_response_code(500);
+            return [
+                'isOk' => false,
+                'message' => 'Something went wrong, please try again later...'
+            ];
+        }
+
+        $updatedRow = $query->rowCount();
+
+        if( $updatedRow !== 1 ){
+            http_response_code(404);
+            return [
+                'isOk' => false,
+                'message' => 'That user does not exist'
+            ];
+        }
+
+        http_response_code(202);
+        return [
+            'isOk' => true,
+            'message' => 'User '. $data['user_id']  .' verification status changed',
+            'is_verified' => $data['is_verified'] === 0 ? 1 : 0
+        ];
+    }
+
+    public function adminAdminChange($data){
+
+        $data = $this->sanitize($data);
+        foreach($data as $key => $value){
+            $data[$key] = intval($value);
+        }
+
+        $validate = new Validate();
+
+        if ($validate->adminAdminChange($data) === false) {
+            http_response_code(400);
+            return [
+                'isOk' => false,
+                'message' => 'Inputs not ok..'
+            ];
+        }
+
+        $query = $this->db->prepare("
+            UPDATE users
+            SET is_admin = ?
+            WHERE user_id = ?;
+       ");
+
+        $result = $query->execute([
+            $data['is_admin'] === 0 ? 1 : 0,
+            $data['user_id']
+        ]);
+
+        if ($result === false) {
+            http_response_code(500);
+            return [
+                'isOk' => false,
+                'message' => 'Something went wrong, please try again later...'
+            ];
+        }
+
+        $updatedRow = $query->rowCount();
+
+        if( $updatedRow !== 1 ){
+            http_response_code(404);
+            return [
+                'isOk' => false,
+                'message' => 'That user does not exist'
+            ];
+        }
+
+        http_response_code(202);
+        return [
+            'isOk' => true,
+            'message' => 'User '. $data['user_id']  .' admin status changed',
+            'is_admin' => $data['is_admin'] === 0 ? 1 : 0
         ];
     }
 }

@@ -54,6 +54,46 @@ if( empty($action) ){
     die;
 } else if(    
     $action === 'users' &&
+    isset($_SESSION['admin']) &&
+    $_SERVER['REQUEST_METHOD'] === 'PUT' &&
+    isset($id) &&
+    is_numeric($id)
+){
+    $requests = [
+        'verificationChange',
+        'adminChange'
+    ];
+
+    header('Content-Type:application/json');
+    $data = (array)json_decode(file_get_contents('php://input'));
+
+    if(
+        !isset($data['request']) ||
+        !in_array($data['request'], $requests)
+    ){
+        http_response_code(400);
+        echo json_encode([
+            'isOk' => false,
+            'message' => 'Bad request...'
+        ]);
+        die;
+    }
+
+
+    require('models/User.php');
+    $model = new User();
+
+    if($data['request'] === 'verificationChange'){
+        $result = $model->adminVerificationChange($data);
+    } else if($data['request'] === 'adminChange'){
+        $result = $model->adminAdminChange($data);
+    }
+
+
+    echo json_encode( $result);
+    die;
+} else if(    
+    $action === 'users' &&
     isset($_SESSION['admin'])
 ){
     require('models/User.php');

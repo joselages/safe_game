@@ -949,6 +949,19 @@ a.profile-edit {
   width: 100%;
 }
 
+.user_btn{
+  display: inline-block;
+  cursor:pointer;
+}
+
+.user_btn:hover{
+  transform: scale(1.05);
+}
+
+.user_btn:active{
+  transform: scale(.95);
+}
+
 @media screen and (max-width: 900px) {
   :root {
     --safe-width: 100%;
