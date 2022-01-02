@@ -908,11 +908,6 @@ a.profile-edit {
   object-fit: cover;
 }
 
-.navigation{
-  position: fixed;
-  top: .5rem;
-  left: .5rem;
-}
 
 .navigation{
   position: fixed;
@@ -922,6 +917,15 @@ a.profile-edit {
   padding:.5rem;
   background-color: rgba(255, 255, 255, 0.15);
   min-width: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.navigation .admin-nav{
+  margin-top: auto;
+  margin-bottom: 1rem;
 }
 
 .nav_item{

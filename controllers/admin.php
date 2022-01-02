@@ -4,7 +4,8 @@ $actions = [
     'login',
     'logout',
     'safes',
-    'users'
+    'users',
+    'stats'
 ];
 
 if( empty($action) ){
@@ -100,11 +101,28 @@ if( empty($action) ){
     $model=new User();
 
     $users = $model->adminGetAll();
-} 
+} else if (
+    $action === 'logout'
+){
+   unset( $_SESSION['admin'] );
+   header('Location:/');
+   die;
+}
 
-if(!in_array($action, $actions)){
+if(
+    !in_array($action, $actions)
+){
     http_response_code(404);
     die('Not found...');
 }
+
+if(
+    $action !== 'login' &&
+    !isset($_SESSION['admin'])
+){
+    header('Location:/admin/login');
+    die;
+}
+
 
 require('views/admin/'.$action.'.php');

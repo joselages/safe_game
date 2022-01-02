@@ -22,7 +22,7 @@
                                 <span>Username: <p><?php echo $user['username']; ?></p></span>
                                 <span>Email: <p><?php echo $user['email']; ?></p></span>
                                 <span>User since:<p><?php echo $user['created_at']; ?></p></span>
-                                <span>safes: <p><?php echo $user['safeCount']; ?></p></span>
+                                <span>Safes: <p><?php echo $user['safeCount']; ?></p></span>
 
                                 <span>Click to change permissions:</span>
                                 <div class="flex space-between">
@@ -122,7 +122,7 @@
                     method: 'PUT',
                     body: JSON.stringify({
                         "request": "verificationChange",
-                        'is_admin': verifiedStatus,
+                        'is_verified': verifiedStatus,
                         "user_id" : userId
                     })
                 });
