@@ -10,6 +10,7 @@ class Safe extends Base
         $query = $this->db->prepare('
             SELECT 
                 safes.safe_id,
+                safes.user_id,
                 CASE
                     WHEN safes.user_id IS NOT NULL 
                         THEN (SELECT users.username FROM users WHERE users.user_id = safes.user_id)

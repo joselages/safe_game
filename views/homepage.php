@@ -19,7 +19,9 @@
             foreach ($safes as $safe) {
                 $crackedIcon = empty($safe['was_cracked']) ? '🔒' : '🔓' ;
                 $crackedTitle =  empty($safe['was_cracked']) ? 'This safe is still uncracked' : 'This safe was cracked' ;
-                
+                                
+                $creatorName = empty($safe['user_id']) ? '<span class="item-message">' . $safe['creator_name'] . '</span>' : '<a href="'.ROOT.'/user/'.$safe['user_id'].'" class="item-message">' . $safe['creator_name'] . '</a>' ;
+
                 echo '
                     <li class="list-item">
                         <span class="item-state" title="'.$crackedTitle.'">'.$crackedIcon.'</span>
@@ -28,9 +30,7 @@
                             <div class="item-line">
                                 <a href="' . ROOT . 'safe/' . $safe['safe_id'] . '" class="item-play">Play</a>
                                 <div>
-                                    <span>by:</span>
-                                    <span class="item-message">' . $safe['creator_name'] . '</span>
-                                </div>
+                                    <span>by:</span>'. $creatorName .'</div>
                             </div>
                         </div>
                     </li>
