@@ -555,7 +555,8 @@ button.safe_open-btn:active {
   text-decoration: underline;
 }
 
-.profile-container {
+.profile-container,
+.admin-stats-container {
   box-sizing: border-box;
   width: 90%;
   height: 85%;
@@ -574,9 +575,14 @@ button.safe_open-btn:active {
   margin-bottom: 2rem;
 }
 
-.safe.-admin .profile-container{
-  border: 10px solid #8f6b1d;
 
+.safe.-admin .profile-container,
+.safe.-admin .admin-stats-container{
+  border: 10px solid #8f6b1d;
+}
+
+.admin-stats-container{
+  overflow: auto;
 }
 
 .safe-list {
@@ -793,7 +799,8 @@ button.safe_open-btn:active {
   background-color: rgb(238, 238, 238);
 }
 
-.user-profile {
+.user-profile,
+.admin-stats  {
   width: 100%;
   height: 100%;
   display: flex;
@@ -819,7 +826,8 @@ a.profile-edit {
   margin-bottom: 2rem;
 }
 
-.profile-info {
+.profile-info,
+.admin-info {
   display: flex;
   flex-wrap: wrap;
   align-content: space-around;
@@ -828,20 +836,23 @@ a.profile-edit {
   flex: 1;
 }
 
-.profile-info > div {
+.profile-info > div,
+.admin-info > div {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 48.5%;
 }
 
-.profile-info dt {
+.profile-info dt,
+.admin-info dt {
   font-size: 1.5rem;
   opacity: 0.75;
   margin-bottom: 0.5rem;
 }
 
-.profile-info dd {
+.profile-info dd,
+.admin-info dd {
   padding: 1rem;
   background-color: black;
   color: yellowgreen;
@@ -851,6 +862,11 @@ a.profile-edit {
   white-space: nowrap;
   min-width: 65px;
   text-align: center;
+}
+
+.admin-info dd {
+  white-space: normal;
+  font-size: 2rem;
 }
 
 .verification_email{

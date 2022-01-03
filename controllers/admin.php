@@ -107,6 +107,52 @@ if( empty($action) ){
    unset( $_SESSION['admin'] );
    header('Location:/');
    die;
+} else if(
+    $action === 'stats'
+){
+    require('models/Admin.php');
+    $model = new Admin();
+
+    $result =[
+        'fastestCrack' => [
+            'description' => 'Fastest crack',
+            'stats' => $model->getFastestCrack()
+        ],
+        'longestUncracked' => [
+            'description' => 'Oldest uncracked safe',
+            'stats' => $model->getLongestUncracked()
+        ],
+        'mostSafesGenerated' => [
+            'description' => 'Biggest creator',
+            'stats' => $model->getUserWithMostSafesGenerated()
+        ],
+        'mostSafesCracked' => [
+            'description' => 'Biggest "cracker"',
+            'stats' => $model->getUserWithMostSafesCracked()
+        ],
+        'youngestUser' => [
+            'description' => 'Youngest User',
+            'stats' => $model->getYoungestUser()
+        ],
+        'oldestUser' => [
+            'description' => 'Oldest User',
+            'stats' => $model->getOldestUser()
+        ],
+        'userCount' => [
+            'description' => 'User count total',
+            'stats' => $model->getUserCount()
+        ],
+        'safeCount' => [
+            'description' => 'Safe count',
+            'stats' => $model->getSafeCount()
+        ],
+        'crackedCount' => [
+            'description' => 'Cracked count',
+            'stats' => $model->getCrackedCount()
+        ]
+    ];
+
+
 }
 
 if(
