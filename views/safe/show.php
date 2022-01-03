@@ -48,10 +48,18 @@
 
     </main>
 
+    <audio id="wrong-click">
+        <source src="/audio/click.mp3" type="audio/mpeg">
+    </audio> 
+    <audio id="right-click">
+        <source src="/audio/click-win.mp3" type="audio/mpeg">
+    </audio> 
+
     <?php if(!empty($_SESSION["safe"])){ ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/Draggable.min.js"></script>
         <script>
+            
             const inputs = document.getElementsByClassName('js-input');
             const btn = document.getElementById('openBtn');
             const safeDoor = document.querySelector('.js-safeDoor');
@@ -94,17 +102,17 @@
                     let correctNumberAtCurrentPosition = this.safeCode[this.correctAmount];
                     const currentNumber = this.padlockValue;
 
-                    console.log('if1: ', correctNumberAtCurrentPosition === currentNumber)
-                    console.log('if2: ', (this.correctAmount === this.userInput.length || this.userInput.length === 3))
-                    console.log('amount: ', this.correctAmount)
-
                     if (
                         correctNumberAtCurrentPosition === currentNumber &&
                         (this.correctAmount === this.userInput.length || this.userInput.length === 3)
                     ) {
-                        console.log('certo')
+                        document.getElementById('right-click').pause();
+                        document.getElementById('right-click').currentTime = 0;
+                        document.getElementById('right-click').play();
                     } else {
-                        console.log('errado')
+                        document.getElementById('wrong-click').pause();
+                        document.getElementById('wrong-click').currentTime = 0;
+                        document.getElementById('wrong-click').play();
                     }
                 }
             };
