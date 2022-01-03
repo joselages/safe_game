@@ -239,7 +239,7 @@ function showCreatedScreen(data){
 
           <p>Here is your safe's link:</p>
           <div class="safe-link">
-              <span class="link">www.site.com/${data["safe_id"]}</span>
+              <span class="link"><?php echo $host; ?>/safe/${data["safe_id"]}</span>
               <button class="copy-link" title="Copy to clipboard" onclick="copyLink(this)">📋</button>
           </div>
 
