@@ -102,13 +102,15 @@ if( empty($action) ){
 
     $users = $model->adminGetAll();
 } else if (
-    $action === 'logout'
+    $action === 'logout' &&
+    isset($_SESSION['admin'])
 ){
    unset( $_SESSION['admin'] );
    header('Location:/');
    die;
 } else if(
-    $action === 'stats'
+    $action === 'stats' &&
+    isset($_SESSION['admin'])
 ){
     require('models/Admin.php');
     $model = new Admin();
@@ -151,8 +153,6 @@ if( empty($action) ){
             'stats' => $model->getCrackedCount()
         ]
     ];
-
-
 }
 
 if(
