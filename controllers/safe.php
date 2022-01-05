@@ -70,7 +70,7 @@ if (
     $action === 'show' &&
     isset($_POST['request'])
 ) {
-    header('Content-Type:application/json');
+    header('Content-Type: application/json');
     $data = $_POST;
 
     $result = $model->openSafe($data);
@@ -87,7 +87,7 @@ if (
         $model->registerOpen($data);
     }
 
-    echo json_encode($result);
+    echo json_encode($result );
     die;
 } else if (
     $action === "create" &&

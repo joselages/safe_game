@@ -50,7 +50,7 @@ class Safe extends Base
                     WHERE cs.safe_id = safes.safe_id 
                     LIMIT 1 
                 ) AS was_cracked,
-                safes.message,
+                safes.message_text,
                 CONCAT(codes.code_1,"/",codes.code_2,"/",codes.code_3) AS code
             FROM safes
             INNER JOIN codes USING (safe_id)
@@ -68,7 +68,7 @@ class Safe extends Base
         $query = $this->db->prepare('
             SELECT 
                 safes.safe_id,
-                safes.message,
+                safes.message_text,
                 (
                     SELECT CONCAT(codes.code_1,"/",codes.code_2,"/",codes.code_3) 
                     FROM codes
@@ -165,6 +165,7 @@ class Safe extends Base
                 safes.safe_id,
                 safes.user_id,
                 safes.message,
+                safes.message_text,
                 safes.image_path,
                 safes.created_at,
                 safes.is_private,
@@ -204,6 +205,7 @@ class Safe extends Base
         $picture = $data['picture'];
         unset($data['picture']);
         
+        $messageJSON = json_encode($data['message']);
         $data = $this->sanitize($data);
         
         $validate = new Validate();
@@ -265,6 +267,7 @@ class Safe extends Base
             INNER JOIN codes ON safes.safe_id = codes.safe_id
             SET 
                 safes.message = ?,
+                safes.message_text = ?,
                 safes.image_path = ?,
                 safes.is_private = ?,
                 codes.code_1 = ?,
@@ -274,7 +277,8 @@ class Safe extends Base
         ');
 
        $result = $query->execute([
-            $data['message'],
+            $messageJSON,
+            $data['message_text'],
             $updateImgPath,
             isset($data['private']) ? 1 : 0,
             $data['code_1'],
@@ -332,6 +336,7 @@ class Safe extends Base
                 'message' => 'Wrong code'
             ];
         }
+
 
         return[
             'status'=>true,
@@ -392,6 +397,7 @@ class Safe extends Base
 
         $validate = new Validate();
 
+        $jsonMessage = json_encode($data['message']);
         $data = $this->sanitize($data);
 
         //cast
@@ -433,13 +439,14 @@ class Safe extends Base
         //inserir tudo na BD
         $query = $this->db->prepare('
             INSERT INTO safes 
-            (user_id,message,image_path,creator_name, is_private)
-            VALUES (?,?,?,?,?)
+            (user_id,message,message_text,image_path,creator_name, is_private)
+            VALUES (?,?,?,?,?,?)
         ');
 
         $result = $query->execute([
             isset($data['user_id']) ? $data['user_id'] : NULL,
-            $data['message'],
+            $jsonMessage,
+            $data['message_text'],
             !empty($image) ? $image['path'] : NULL,
             isset($data['creator_name']) ? $data['creator_name'] : NULL,
             $data['private'] ? 1 : 0,

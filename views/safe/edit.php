@@ -20,11 +20,13 @@
                 }
                 ?>
 
-                <form class="make-form -big-inputs" action="/safe/edit/<?php echo $result['safe']['safe_id'] ?>" method="post" enctype="multipart/form-data">
+                <form class="make-form -big-inputs js-editForm" action="/safe/edit/<?php echo $result['safe']['safe_id'] ?>" method="post" enctype="multipart/form-data">
+                    <input class="js-hiddenMessage" type="hidden" name="message">
+                    <input class="js-hiddenTextMessage" type="hidden" name="message_text">
                     <label>
                         Message:
-                        <textarea rows="3" name="message" spellcheck="false" minlength="8" maxlength="140" required><?php echo $result['safe']['message'] ?></textarea>
                     </label>
+                    <div id="editor" rows="3" name="message_fake" spellcheck="false" minlength="8" maxlength="140" required></div>
 
                     <?php if (!empty($result['safe']['image_path'])) { ?>
                         <div class="form-image-display">
@@ -79,6 +81,35 @@
         <?php } ?>
     </main>
 
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+<script>
+  var quill = new Quill('#editor', {
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'link']
+        ]
+      },
+      placeholder: '',
+      theme: 'snow'  // or 'bubble'
+    });
+
+
+    const hiddenMessage = document.querySelector('.js-hiddenMessage');
+    const hiddenTextMessage = document.querySelector('.js-hiddenTextMessage');
+
+
+    quill.on('editor-change', () => {
+
+        hiddenMessage.value = JSON.stringify(quill.getContents());
+        hiddenTextMessage.value = quill.getText();;
+    })
+
+
+    const message = <?php echo $result['safe']['message']; ?>;
+
+    quill.setContents(JSON.parse(message));
+</script>
 </body>
 
 </html>

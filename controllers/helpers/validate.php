@@ -91,7 +91,7 @@ class Validate extends Base
                 $data['send-by'] === 'link'
             ) &&
             ( //validar mensagem 
-                mb_strlen($data['message']) > 8 && mb_strlen($data['message']) < 140
+                mb_strlen($data['message_text']) > 8 && mb_strlen($data['message_text']) < 140
             ) &&
             is_numeric($data['code_1']) && //verificar se codigo é um numero
             ( //verificar intervalo dos digitos do codigo
@@ -115,7 +115,7 @@ class Validate extends Base
     {
         if (
             ( //validar mensagem 
-                mb_strlen($data['message']) > 8 && mb_strlen($data['message']) < 140
+                mb_strlen($data['message_text']) > 8 && mb_strlen($data['message_text']) < 140
             ) &&
             is_numeric($data['code_1']) && //verificar se codigo é um numero
             ( //verificar intervalo dos digitos do codigo

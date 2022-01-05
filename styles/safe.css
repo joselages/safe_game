@@ -51,9 +51,16 @@ body {
   perspective: 1300px;
 }
 
-.safe.-admin{
+.safe.-admin {
   background-color: #fbb034;
-  --safe-gradient: linear-gradient(315deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);;
+  --safe-gradient: linear-gradient(
+    315deg,
+    #bf953f,
+    #fcf6ba,
+    #b38728,
+    #fbf5b7,
+    #aa771c
+  );
 }
 
 .safe.home-page,
@@ -118,7 +125,7 @@ h1 {
   z-index: 9;
 }
 
-.-door{
+.-door {
   width: 70%;
   height: auto;
   border-radius: var(--door-radius);
@@ -126,9 +133,8 @@ h1 {
   margin-top: 2rem;
 }
 
-.safe.-admin .-door{
+.safe.-admin .-door {
   border: 10px solid #8f6b1d;
-
 }
 
 .safe_door-front {
@@ -186,11 +192,11 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
   color: white;
   grid-column: 1/2;
   grid-row: 1/2;
-  padding:1rem;
+  padding: 1rem;
 }
 
 .safe_inside img {
@@ -199,11 +205,11 @@ h1 {
 }
 
 .safe_inside div {
-  flex:1;
-  width:80%;
+  flex: 1;
+  width: 80%;
   overflow-y: auto;
 
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-size: 2rem;
 }
 
@@ -312,8 +318,9 @@ button.safe_open-btn:active {
   margin-bottom: 1rem;
 }
 
+/* QUILL STYLES OVERWRITE*/
 .make-form input:not([type="radio"]),
-.make-form textarea {
+.ql-container {
   background-color: black;
   border: 3px solid grey;
   padding: 0.75rem;
@@ -323,10 +330,46 @@ button.safe_open-btn:active {
   font-size: 1.2rem;
 }
 
-.safe.-admin .make-form input:not([type="radio"]){
-  border: 3px solid #8f6b1d;
+.make-form .ql-snow .ql-stroke {
+  stroke: grey;
 }
 
+.make-form .ql-snow .ql-fill {
+  stroke: grey;
+}
+
+.make-form .ql-snow.ql-toolbar button:hover,
+.make-form .ql-snow.ql-toolbar button.ql-active{
+  color: yellowgreen !important;
+}
+
+.make-form .ql-snow.ql-toolbar button:hover .ql-stroke,
+.make-form .ql-snow.ql-toolbar button.ql-active .ql-stroke{
+  stroke: yellowgreen !important;
+
+}
+
+.make-form .ql-snow.ql-toolbar button:hover .ql-fill,
+.make-form .ql-snow.ql-toolbar button.ql-active .ql-fill{
+  stroke: yellowgreen !important;
+}
+
+.make-form .ql-toolbar {
+  border-radius: 10px 10px 0 0;
+  background-color: black;
+  border: 3px solid grey;
+}
+
+.make-form .ql-container {
+  height: 150px;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 1rem;
+  border: 3px solid grey;
+}
+
+.safe.-admin .make-form input:not([type="radio"]) {
+  border: 3px solid #8f6b1d;
+}
 
 .make-form.-big-inputs input {
   font-size: 2.25rem;
@@ -345,8 +388,8 @@ button.safe_open-btn:active {
   gap: 4rem;
 }
 
-.form-image-display{
-  gap: .75rem;
+.form-image-display {
+  gap: 0.75rem;
   align-items: flex-end;
   margin-bottom: 1rem;
 }
@@ -387,11 +430,11 @@ button.safe_open-btn:active {
   text-align: center;
 }
 
-.make-form button {
+.make-form button:not([type="button"]) {
   width: 75%;
   min-height: 4rem;
   border-radius: 10px;
-  color: rgb(25, 87, 25);
+  color: rgb(11, 14, 11);
   background-color: greenyellow;
   border: 6px solid rgb(131, 195, 34);
   font-family: "VT323", monospace;
@@ -400,7 +443,7 @@ button.safe_open-btn:active {
   margin: 0 auto;
 }
 
-.make-form button.-on-bottom{
+.make-form button.-on-bottom {
   position: absolute;
   bottom: 1rem;
   left: 50%;
@@ -575,13 +618,12 @@ button.safe_open-btn:active {
   margin-bottom: 2rem;
 }
 
-
 .safe.-admin .profile-container,
-.safe.-admin .admin-stats-container{
+.safe.-admin .admin-stats-container {
   border: 10px solid #8f6b1d;
 }
 
-.admin-stats-container{
+.admin-stats-container {
   overflow: auto;
 }
 
@@ -676,7 +718,7 @@ button.safe_open-btn:active {
   margin: 0.75rem 0;
 }
 
-.item-info.-user{
+.item-info.-user {
   align-items: flex-start;
 }
 
@@ -723,7 +765,7 @@ button.safe_open-btn:active {
   margin-left: auto;
 }
 
-.item-btns > .item-btn{
+.item-btns > .item-btn {
   outline: none;
   border: none;
   height: 35px;
@@ -800,7 +842,7 @@ button.safe_open-btn:active {
 }
 
 .user-profile,
-.admin-stats  {
+.admin-stats {
   width: 100%;
   height: 100%;
   display: flex;
@@ -869,48 +911,46 @@ a.profile-edit {
   font-size: 2rem;
 }
 
-.verification_email{
+.verification_email {
   text-align: center;
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-size: 1.55rem;
   font-size: 2rem;
   display: flex;
   flex-direction: column;
- align-items: center;
- justify-content: center;
-  gap:2rem;
-  padding:2rem;
-  
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
 }
 
-.verification_email span{
+.verification_email span {
   font-size: 4rem;
 }
 
-
-.form-alert{
-  font-family: 'VT323', monospace;
+.form-alert {
+  font-family: "VT323", monospace;
   font-size: 1.55rem;
   text-align: center;
   margin: 1rem auto 0 auto;
-  padding: .75rem;
+  padding: 0.75rem;
   border-radius: 5px;
   width: 80%;
 }
 
-.form-alert.-negative{
+.form-alert.-negative {
   background-color: rgb(236, 95, 95);
   color: rgb(88, 0, 0);
   border: 2px solid rgb(88, 0, 0);
 }
 
-.form-alert.-positive{
+.form-alert.-positive {
   background-color: rgb(123, 236, 95);
   color: rgb(3, 88, 0);
   border: 2px solid rgb(3, 88, 0);
 }
 
-.safe_image{
+.safe_image {
   height: 75px;
   width: 75px;
   border: 2px solid rgb(90, 90, 90);
@@ -918,68 +958,65 @@ a.profile-edit {
   overflow: hidden;
 }
 
-.safe_image img{
+.safe_image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-
-.navigation{
+.navigation {
   position: fixed;
   top: 0rem;
   left: 0rem;
-  bottom:0;
-  padding:.5rem;
+  bottom: 0;
+  padding: 0.5rem;
   background-color: rgba(255, 255, 255, 0.15);
   min-width: 120px;
   display: flex;
   flex-direction: column;
 }
 
-
-
-.navigation .admin-nav{
+.navigation .admin-nav {
   margin-top: auto;
   margin-bottom: 1rem;
 }
 
-.nav_item{
-  font-family: 'VT323', monospace;
+.nav_item {
+  font-family: "VT323", monospace;
 }
 
-.nav_item:not( :last-of-type ){
+.nav_item:not(:last-of-type) {
   margin-bottom: 1rem;
 }
 
-.nav_item[aria-current]{
+.nav_item[aria-current] {
   pointer-events: none;
   text-decoration: none;
 }
 
-.nav_item[aria-current]::after{
-  content: '👉';
+.nav_item[aria-current]::after {
+  content: "👉";
   margin-left: 5px;
 }
 
-.flex.space-between{
+.flex.space-between {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   width: 100%;
 }
 
-.user_btn{
+.user_btn {
   display: inline-block;
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.user_btn:hover{
+.user_btn:hover {
   transform: scale(1.05);
 }
 
-.user_btn:active{
-  transform: scale(.95);
+.user_btn:active {
+  transform: scale(0.95);
 }
 
 @media screen and (max-width: 900px) {

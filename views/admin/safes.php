@@ -32,7 +32,7 @@
                                         } ?>
 
                                     </div>
-                                    <p class="item-message">✉️ <?php echo substr($safe['message'], 0, 15) ?>...</p>
+                                    <p class="item-message">✉️ <?php echo substr($safe['message_text'], 0, 15) ?>...</p>
                             </div>
                             <div class="flex space-between">
                                 <div>

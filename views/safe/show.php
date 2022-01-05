@@ -56,6 +56,7 @@
     </audio> 
 
     <?php if(!empty($_SESSION["safe"])){ ?>
+        <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/Draggable.min.js"></script>
         <script>
@@ -79,7 +80,7 @@
                     this.spinCount = Math.floor(rotationValue / 360);
 
                     this.padlockValue =
-                        Math.ceil(41 -
+                        Math.round(41 -
                             (rotationValue / this.snapInterval -
                                 this.spinCount * (360 / this.snapInterval)));
 
@@ -201,13 +202,14 @@
                     request.status !== 200 ||
                     response["status"] === false
                 ){
-                    //tocar musica de erro
                     return;
                 }
 
+                const htmlMessage = deltaToHtml(  response["content"]['message'] );
+
                 messageToInject =`
                     ${ response["content"]['image_path'] ? `<img src="<?php echo ROOT; ?>/${response["content"]['image_path']}">` : '' } 
-                    ${ response["content"]['message'] }
+                    ${ htmlMessage }
                 `;
 
                 safeInside.innerHTML = messageToInject;
@@ -221,6 +223,19 @@
                 const msSpentCracking = now - startedDate;
 
                 return Math.round(msSpentCracking / 1000);
+            }
+
+
+
+            function deltaToHtml(delta){
+                delta = JSON.parse(JSON.parse(delta));
+ 
+                const tempEl = document.createElement('div')
+                const tempQuill = new Quill(tempEl);
+                tempQuill.setContents(delta, 'api');
+
+
+                return tempEl.querySelector('.ql-editor').innerHTML;
             }
         </script>
     <?php } ?>

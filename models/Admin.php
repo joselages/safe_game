@@ -7,7 +7,7 @@ class Admin extends Base {
         $query= $this->db->prepare('
             SELECT 
             CONCAT(
-                (SELECT username FROM users WHERE users.user_id = sc.user_id), 
+                (SELECT username FROM users WHERE users.user_id = sc.user_id),
                 " cracked the safe with ID ", 
                 safe_id, 
                 " in ", 
@@ -15,6 +15,7 @@ class Admin extends Base {
                 " seconds!" 
             ) as finalSentence
             FROM cracked_safes AS sc
+            WHERE sc.user_id IS NOT NULL
             ORDER BY sc.seconds_to_crack
             LIMIT 1;
         ');
