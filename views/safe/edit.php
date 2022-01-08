@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 
 <?php require('templates/head.php'); ?>
 
