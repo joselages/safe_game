@@ -2,8 +2,8 @@
 
 <body>
 
-<?php require('templates/nav.php'); ?>
-<main class="safe safe-form -admin">
+    <?php require('templates/nav.php'); ?>
+    <main class="safe safe-form -admin">
         <h1>Admin Safes</h1>
 
         <div class="profile-container">
@@ -156,8 +156,6 @@
                 navigator.clipboard.writeText(linkToCopy);
             });
         }
-
-
     </script>
     
 </body>
