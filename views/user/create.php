@@ -19,23 +19,38 @@
         }
         ?>
 
-        <form class="make-form -big-inputs" action="/user/create" method="post">
+        <?php 
+            $userName = $_POST['username'] ?? '';
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $repPassword = $_POST['repeat_password'] ?? '';
+        ?>
+
+        <form class="make-form" action="/user/create" method="post">
             <label>
                 Name
-                <input type="text" name="username" minlength="2" maxlength="15" required>
+                <input type="text" name="username" minlength="2" maxlength="15" value="<?php echo $userName ?>" required>
             </label>
             <label>
                 Email
-                <input type="email" name="email" required>
+                <input type="email" name="email" value="<?php echo $email ?>" required>
             </label>
             <label>
                 Password
-                <input type="password" name="password" minlength="8" maxlength="1000" required>
+                <input type="password" name="password" minlength="8" maxlength="1000" value="<?php echo $password ?>" required>
             </label>
             <label>
                 Repeat password
-                <input type="password" name="repeat_password" minlength="8" maxlength="1000" required>
+                <input type="password" name="repeat_password" minlength="8" maxlength="1000" value="<?php echo $repPassword ?>" required>
             </label>
+
+            <div class="captcha_container">
+                <img class="sign_up-captcha" src="/captcha/captcha.php"> 
+                <label>
+                     What's on the captcha?
+                    <input type="text" name="captcha" minlength="6" maxlength="6" required>
+                </label>
+            </div>
 
             <button type="submit" name="submit">Sign up</button>
         </form>

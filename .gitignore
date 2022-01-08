@@ -4,3 +4,5 @@
 .env
 /vendor
 composer.lock
+captcha/RubikBeastly-Regular.ttf
+audio

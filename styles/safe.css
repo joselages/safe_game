@@ -1019,6 +1019,27 @@ a.profile-edit {
   transform: scale(0.95);
 }
 
+.sign_up-captcha{
+  width: 120px;
+  border-radius: 15px;
+}
+.captcha_container{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+}
+
+.captcha_container label
+{
+  margin: 0 0 0 .5rem;
+}
+
+.captcha_container input
+{
+  width: 100%;
+}
+
 @media screen and (max-width: 900px) {
   :root {
     --safe-width: 100%;

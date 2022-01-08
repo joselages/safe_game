@@ -38,8 +38,19 @@ if ( is_numeric($action))  {
 } else if ($action === 'create') { ////user/create
 
     if (isset($_POST['submit'])) {
+        
+        if(
+            !isset($_POST['captcha']) ||
+            ($_POST['captcha'] !== $_SESSION['captcha'])
+        ){
+            $result = [
+                'isStored' => false,
+                'message' => 'Wrong captcha...'
+            ];
+        } else {
+            $result = $model->store($_POST);
+        }
 
-        $result = $model->store($_POST);
 
         if ($result['isStored']) {
 
