@@ -104,10 +104,14 @@
                         correctNumberAtCurrentPosition === currentNumber &&
                         (this.correctAmount === this.userInput.length || this.userInput.length === 3)
                     ) {
+                        document.getElementById('wrong-click').pause();
+                        document.getElementById('wrong-click').currentTime = 0;
                         document.getElementById('right-click').pause();
                         document.getElementById('right-click').currentTime = 0;
                         document.getElementById('right-click').play();
                     } else {
+                        document.getElementById('right-click').pause();
+                        document.getElementById('right-click').currentTime = 0;
                         document.getElementById('wrong-click').pause();
                         document.getElementById('wrong-click').currentTime = 0;
                         document.getElementById('wrong-click').play();
